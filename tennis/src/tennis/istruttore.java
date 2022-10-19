@@ -10,7 +10,7 @@ public class istruttore {
 	private String email; 
 	private String numero; 
 	private String password; 
-	private short esperienza; 
+	private int esperienza; 
 	private int oreLezione; 
 	private float pagaOraria; 
 
@@ -62,7 +62,7 @@ public class istruttore {
 		this.password = password;
 	}
 
-	public short getEsperienza() {
+	public int getEsperienza() {
 		return esperienza;
 	}
 
