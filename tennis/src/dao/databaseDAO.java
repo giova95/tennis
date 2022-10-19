@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tennis.utente;
+import tennis.istruttore;
 
 /**
  * AbstractDAO for API CRUD
@@ -17,6 +18,7 @@ public class databaseDAO {
 	private String url = "jdbc:mysql://localhost:8080/tennisApp?useSSL=false";
 	private String jdbcUsername = "root";
 	private String jdbcPassword = "";
+
 
 	// select all tables SQL
 	private static final String SELECT_ALL_USERS = "select * from utente";
@@ -49,8 +51,7 @@ public class databaseDAO {
 			+ " oreLezione = ?, pagaOraria = ? where id = ?;";
 	private static final String UPDATE_INSTRU_SQL = "update users set dataOra = ?, durata = ?, prezzo = ?  where id = ?;";
 
-	public databaseDAO() {
-	}
+	public databaseDAO() {}
 
 	protected Connection getConnection() {
 		Connection connection = null;
@@ -85,6 +86,26 @@ public class databaseDAO {
         }
     }
 	
-
-
+	public void insertInstru(istruttore istr) throws SQLException {
+        System.out.println(INSERT_INSTRU_SQL);
+        // try-with-resource statement will auto close the connection.
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
+            preparedStatement.setString(1, istr.getNome());
+            preparedStatement.setString(2, istr.getCognome());
+            preparedStatement.setLong(3, istr.getEta());
+            preparedStatement.setLong(4, istr.getSesso());
+            preparedStatement.setString(5, istr.getEmail());
+            preparedStatement.setString(6, istr.getNumero());
+            preparedStatement.setString(7, istr.getPassword());
+            preparedStatement.setLong(8, istr.getEsperienza());
+            preparedStatement.setLong(9, istr.getOreLezione());
+            preparedStatement.setString(10, Float.toString(istr.getPagaOraria()));
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQLState: " +((SQLException)e).getSQLState());
+        }
+    }
+	
+	
 }
