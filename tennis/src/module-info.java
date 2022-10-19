@@ -6,4 +6,5 @@
  *
  */
 module tennis {
+	requires java.sql;
 }
