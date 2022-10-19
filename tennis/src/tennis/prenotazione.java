@@ -10,6 +10,7 @@ public class prenotazione {
 	private campo campo;
 	private istruttore istruttore;
 	private String tipo;
+	private String provaString;
 	
 	
 	public int getId() {
