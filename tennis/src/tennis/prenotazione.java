@@ -11,7 +11,20 @@ public class prenotazione {
 	private istruttore istruttore;
 	private String tipo;
 	
-	
+	public prenotazione(int id, String dataOra, int durata, float prezzo, String partecipanti, tennis.campo campo,
+			tennis.istruttore istruttore, String tipo) {
+		super();
+		this.id = id;
+		this.dataOra = dataOra;
+		this.durata = durata;
+		this.prezzo = prezzo;
+		this.partecipanti = partecipanti;
+		this.campo = campo;
+		this.istruttore = istruttore;
+		this.tipo = tipo;
+	}
+
+
 	public int getId() {
 		return id;
 	}

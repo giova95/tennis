@@ -13,6 +13,22 @@ public class istruttore {
 	private int esperienza; 
 	private int oreLezione; 
 	private float pagaOraria; 
+	
+	public istruttore(int id, String nome, String cognome, int eta, char sesso, String email, String numero,
+			String password, int esperienza, int oreLezione, float pagaOraria) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.eta = eta;
+		this.sesso = sesso;
+		this.email = email;
+		this.numero = numero;
+		this.password = password;
+		this.esperienza = esperienza;
+		this.oreLezione = oreLezione;
+		this.pagaOraria = pagaOraria;
+	}
 
 	public int getId() {
 		return id;
@@ -65,6 +81,7 @@ public class istruttore {
 	public int getEsperienza() {
 		return esperienza;
 	}
+
 
 	public void setEsperienza(short esperienza) {
 		this.esperienza = esperienza;

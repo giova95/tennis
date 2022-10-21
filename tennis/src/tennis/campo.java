@@ -8,7 +8,16 @@ public class campo {
 	private float prezzo;
 	private int valutazione;
 	
-	
+	public campo(int id, String tipo, boolean coperto, float prezzo, int valutazione) {
+		super();
+		this.id = id;
+		this.tipo = tipo;
+		this.coperto = coperto;
+		this.prezzo = prezzo;
+		this.valutazione = valutazione;
+	}
+
+
 	public int getId() {
 		return id;
 	}
