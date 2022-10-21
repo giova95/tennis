@@ -205,7 +205,7 @@ public class databaseDAO {
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
 			preparedStatement.setString(1, user.getNome());
 			preparedStatement.setString(2, user.getCognome());
-			preparedStatement.setString(3, Integer.toString(user.getEta()));
+			preparedStatement.setInt(3, user.getEta());
 			preparedStatement.setString(4, Character.toString(user.getSesso()));
 			preparedStatement.setString(5, user.getEmail());
 			preparedStatement.setString(6, user.getNumero());
@@ -224,14 +224,14 @@ public class databaseDAO {
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INSTRU_SQL)) {
 			preparedStatement.setString(1, istr.getNome());
 			preparedStatement.setString(2, istr.getCognome());
-			preparedStatement.setString(3, Integer.toString(istr.getEta()));
+			preparedStatement.setInt(3, istr.getEta());
 			preparedStatement.setString(4, Character.toString(istr.getSesso()));
 			preparedStatement.setString(5, istr.getEmail());
 			preparedStatement.setString(6, istr.getNumero());
 			preparedStatement.setString(7, istr.getPassword());
-			preparedStatement.setString(8, Integer.toString(istr.getEsperienza())); //
-			preparedStatement.setString(9, Integer.toString(istr.getOreLezione())); //
-			preparedStatement.setString(10, Float.toString(istr.getPagaOraria()));
+			preparedStatement.setInt(8, istr.getEsperienza());
+			preparedStatement.setInt(9, istr.getOreLezione()); 
+			preparedStatement.setFloat(10, istr.getPagaOraria());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -245,9 +245,9 @@ public class databaseDAO {
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_FIELDS_SQL)) {
 			preparedStatement.setString(1, c.getTipo());
-			preparedStatement.setString(2, Float.toString(c.getPrezzo()));
-			preparedStatement.setString(3, Integer.toString(c.getValutazione()));
-			preparedStatement.setString(4, Boolean.toString(c.isCoperto()));
+			preparedStatement.setFloat(2, c.getPrezzo());
+			preparedStatement.setInt(3, c.getValutazione());
+			preparedStatement.setBoolean(4, c.isCoperto());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -261,17 +261,140 @@ public class databaseDAO {
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RESERV_SQL)) {
 			preparedStatement.setString(1, p.getDataOra());
-			preparedStatement.setString(2, Integer.toString(p.getDurata()));
-			preparedStatement.setString(3, Float.toString(p.getPrezzo()));
+			preparedStatement.setInt(2, p.getDurata());
+			preparedStatement.setFloat(3, p.getPrezzo());
 			preparedStatement.setString(4, p.getPartecipanti());
-			preparedStatement.setString(5, Integer.toString(p.getCampo()));
-			preparedStatement.setString(6, Integer.toString(p.getIstruttore()));
+			preparedStatement.setInt(5, p.getCampo());
+			preparedStatement.setInt(6, p.getIstruttore());
 			preparedStatement.setString(7, p.getTipo());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+	}
+
+//CRUD API DELETE
+
+	public boolean deleteUser(int id) throws SQLException {
+		boolean rowDeleted;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
+			statement.setInt(1, id);
+			rowDeleted = statement.executeUpdate() > 0;
+		}
+		return rowDeleted;
+	}
+
+	public boolean deleteField(int id) throws SQLException {
+		boolean rowDeleted;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(DELETE_FIELDS_SQL);) {
+			statement.setInt(1, id);
+			rowDeleted = statement.executeUpdate() > 0;
+		}
+		return rowDeleted;
+	}
+
+	public boolean deleteReserv(int id) throws SQLException {
+		boolean rowDeleted;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(DELETE_RESERV_SQL);) {
+			statement.setInt(1, id);
+			rowDeleted = statement.executeUpdate() > 0;
+		}
+		return rowDeleted;
+	}
+
+	public boolean deleteInstru(int id) throws SQLException {
+		boolean rowDeleted;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(DELETE_ISTRU_SQL);) {
+			statement.setInt(1, id);
+			rowDeleted = statement.executeUpdate() > 0;
+		}
+		return rowDeleted;
+	}
+
+//CRUD API PATCH
+
+	public boolean updateUser(utente user) throws SQLException {
+		boolean rowUpdated = false;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);) {
+			statement.setString(1, user.getNome());
+			statement.setString(2, user.getCognome());
+			statement.setInt(3, user.getEta());
+			statement.setString(4, Character.toString(user.getSesso()));
+			statement.setString(5, user.getEmail());
+			statement.setString(6, user.getNumero());
+			statement.setString(7, user.getPassword());
+			System.out.println(statement);
+			rowUpdated = statement.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return rowUpdated;
+	}
+
+	public boolean updateField(campo c) throws SQLException {
+		boolean rowUpdated = false;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(UPDATE_FIELDS_SQL);) {
+
+			statement.setString(1, c.getTipo());
+			statement.setFloat(2, c.getPrezzo());
+			statement.setInt(3, c.getValutazione());
+			statement.setBoolean(4, c.isCoperto());
+			System.out.println(statement);
+			rowUpdated = statement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return rowUpdated;
+	}
+
+	public boolean updateReserv(prenotazione p) throws SQLException {
+		boolean rowUpdated = false;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(UPDATE_REVERS_SQL);) {
+			statement.setString(1, p.getDataOra());
+			statement.setInt(2, p.getDurata());
+			statement.setFloat(3, p.getPrezzo());
+			statement.setString(4, p.getPartecipanti());
+			statement.setInt(5, p.getCampo());
+			statement.setInt(6, p.getIstruttore());
+			statement.setString(7, p.getTipo());
+			System.out.println(statement);
+			rowUpdated = statement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return rowUpdated;
+	}
+
+	public boolean updateInstru(istruttore istr) throws SQLException {
+		boolean rowUpdated = false;
+		try (Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(UPDATE_INSTRU_SQL);) {
+			statement.setString(1, istr.getNome());
+			statement.setString(2, istr.getCognome());
+			statement.setInt(3, istr.getEta());
+			statement.setString(4, Character.toString(istr.getSesso()));
+			statement.setString(5, istr.getEmail());
+			statement.setString(6, istr.getNumero());
+			statement.setString(7, istr.getPassword());
+			statement.setInt(8, istr.getEsperienza());
+			statement.setInt(9, istr.getOreLezione());
+			statement.setFloat(10, istr.getPagaOraria());
+			System.out.println(statement);
+
+			rowUpdated = statement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return rowUpdated;
 	}
 
 	private void printSQLException(SQLException ex) {
