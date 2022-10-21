@@ -68,42 +68,136 @@ public class databaseDAO {
 		return connection;
 
 	}
-	
-	//CRUD API GET
-	public List < utente > selectAllUsers() {
 
-        // using try-with-resources to avoid closing resources (boiler plate code)
-        List < utente > users = new ArrayList < > ();
-        // Step 1: Establishing a Connection
-        try (Connection connection = getConnection();
+	// CRUD API GET
+	public List<utente> selectUsers() {
 
-            // Step 2:Create a statement using connection object
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		List<utente> users = new ArrayList<>();
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
 
-            // Step 4: Process the ResultSet object.
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("nome");
-                String surname = rs.getString("cognome");
-                int age = rs.getInt("eta");
-                char sesso = rs.getString("sesso").charAt(0);
-                String email = rs.getString("email");
-                String telephone = rs.getString("telefono");
-                String password = rs.getString("password");
-                users.add(new utente(id, name, surname, age, email, telephone, password, sesso));
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return users;
-    }
-	
-	
-	
-	//CRUD API POST/PUT
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("nome");
+				String surname = rs.getString("cognome");
+				int age = rs.getInt("eta");
+				char sesso = rs.getString("sesso").charAt(0);
+				String email = rs.getString("email");
+				String telephone = rs.getString("telefono");
+				String password = rs.getString("password");
+				users.add(new utente(id, name, surname, age, email, telephone, password, sesso));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return users;
+	}
+
+	public List<campo> selectFields() {
+
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		List<campo> fields = new ArrayList<>();
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FIELDS);) {
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String type = rs.getString("tipo");
+				float price = rs.getFloat("prezzo");
+				int evaluation = rs.getInt("valutazione");
+				boolean cover = (rs.getBoolean("coperto"));
+				fields.add(new campo(id, type, cover, price, evaluation));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+
+		return fields;
+	}
+
+	public List<istruttore> selectInstructors() {
+
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		List<istruttore> istr = new ArrayList<>();
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_INSTRU);) {
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("nome");
+				String surname = rs.getString("cognome");
+				int age = rs.getInt("eta");
+				char sesso = rs.getString("sesso").charAt(0);
+				String email = rs.getString("email");
+				String telephone = rs.getString("telefono");
+				String password = rs.getString("password");
+				int experience = rs.getInt("esperienza");
+				int hour = rs.getInt("oreLezione");
+				float paid = rs.getFloat("pagaOraria");
+				istr.add(new istruttore(id, name, surname, age, sesso, email, telephone, password, experience, hour,
+						paid));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+
+		return istr;
+	}
+
+	public List<prenotazione> selectReserv() {
+
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		List<prenotazione> reserv = new ArrayList<>();
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_RESERV);) {
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String date = rs.getString("dataOra");
+				int durata = rs.getInt("durata");
+				float price = rs.getFloat("prezzo");
+				String part = rs.getString("partecipanti");
+				int field = rs.getInt("campo");
+				int istr = rs.getInt("istruttore");
+				String type = rs.getString("tipo");
+				reserv.add(new prenotazione(id, date, durata, price, part, field, istr, type));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return reserv;
+	}
+
+	// CRUD API POST/PUT
 	public void insertUser(utente user) throws SQLException {
 		System.out.println(INSERT_USERS_SQL);
 		// try-with-resource statement will auto close the connection.
@@ -111,8 +205,8 @@ public class databaseDAO {
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
 			preparedStatement.setString(1, user.getNome());
 			preparedStatement.setString(2, user.getCognome());
-			preparedStatement.setString(3, Integer.toString(user.getEta())); 
-			preparedStatement.setString(4, Character.toString(user.getSesso())); 
+			preparedStatement.setString(3, Integer.toString(user.getEta()));
+			preparedStatement.setString(4, Character.toString(user.getSesso()));
 			preparedStatement.setString(5, user.getEmail());
 			preparedStatement.setString(6, user.getNumero());
 			preparedStatement.setString(7, user.getPassword());
@@ -130,13 +224,13 @@ public class databaseDAO {
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INSTRU_SQL)) {
 			preparedStatement.setString(1, istr.getNome());
 			preparedStatement.setString(2, istr.getCognome());
-			preparedStatement.setString(3, Integer.toString(istr.getEta())); 
-			preparedStatement.setString(4, Character.toString(istr.getSesso())); 
+			preparedStatement.setString(3, Integer.toString(istr.getEta()));
+			preparedStatement.setString(4, Character.toString(istr.getSesso()));
 			preparedStatement.setString(5, istr.getEmail());
 			preparedStatement.setString(6, istr.getNumero());
 			preparedStatement.setString(7, istr.getPassword());
-			preparedStatement.setString(8, Integer.toString(istr.getEsperienza())); // TODO: fare Tostring
-			preparedStatement.setString(9, Integer.toString(istr.getOreLezione())); // TODO: fare Tostring
+			preparedStatement.setString(8, Integer.toString(istr.getEsperienza())); //
+			preparedStatement.setString(9, Integer.toString(istr.getOreLezione())); //
 			preparedStatement.setString(10, Float.toString(istr.getPagaOraria()));
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
@@ -170,8 +264,8 @@ public class databaseDAO {
 			preparedStatement.setString(2, Integer.toString(p.getDurata()));
 			preparedStatement.setString(3, Float.toString(p.getPrezzo()));
 			preparedStatement.setString(4, p.getPartecipanti());
-			preparedStatement.setString(5, Integer.toString(p.getCampo().getId()));
-			preparedStatement.setString(6, Integer.toString(p.getIstruttore().getId()));
+			preparedStatement.setString(5, Integer.toString(p.getCampo()));
+			preparedStatement.setString(6, Integer.toString(p.getIstruttore()));
 			preparedStatement.setString(7, p.getTipo());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
@@ -180,22 +274,19 @@ public class databaseDAO {
 		}
 	}
 
-
-private void printSQLException(SQLException ex) {
-    for (Throwable e: ex) {
-        if (e instanceof SQLException) {
-            e.printStackTrace(System.err);
-            System.err.println("SQLState: " + ((SQLException) e).getSQLState());
-            System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
-            System.err.println("Message: " + e.getMessage());
-            Throwable t = ex.getCause();
-            while (t != null) {
-                System.out.println("Cause: " + t);
-                t = t.getCause();
-            }
-        }
-    }
+	private void printSQLException(SQLException ex) {
+		for (Throwable e : ex) {
+			if (e instanceof SQLException) {
+				e.printStackTrace(System.err);
+				System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+				System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+				System.err.println("Message: " + e.getMessage());
+				Throwable t = ex.getCause();
+				while (t != null) {
+					System.out.println("Cause: " + t);
+					t = t.getCause();
+				}
+			}
+		}
+	}
 }
-}
-
-

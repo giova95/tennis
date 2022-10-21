@@ -7,12 +7,12 @@ public class prenotazione {
 	private int durata; 
 	private float prezzo; 
 	private String partecipanti;
-	private campo campo;
-	private istruttore istruttore;
+	private int campo;
+	private int istruttore;
 	private String tipo;
 	
-	public prenotazione(int id, String dataOra, int durata, float prezzo, String partecipanti, tennis.campo campo,
-			tennis.istruttore istruttore, String tipo) {
+	public prenotazione(int id, String dataOra, int durata, float prezzo, String partecipanti, int campo,
+			int istruttore, String tipo) {
 		super();
 		this.id = id;
 		this.dataOra = dataOra;
@@ -35,12 +35,12 @@ public class prenotazione {
 	}
 
 
-	public campo getCampo() {
+	public int getCampo() {
 		return campo;
 	}
 
 
-	public istruttore getIstruttore() {
+	public int getIstruttore() {
 		return istruttore;
 	}
 

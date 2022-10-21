@@ -16,6 +16,7 @@ public class utente {
 	
 	public utente(int id, String nome, String cognome, int eta, String email, String numero, String password,
 			char sesso) {
+		super();
 		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
