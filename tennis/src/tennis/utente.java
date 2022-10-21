@@ -11,6 +11,21 @@ public class utente {
 	private String password; 
 	private char sesso;
 	
+	
+	
+	public utente(int id, String nome, String cognome, int eta, String email, String numero, String password,
+			char sesso) {
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.eta = eta;
+		this.email = email;
+		this.numero = numero;
+		this.password = password;
+		this.sesso = sesso;
+	}
+
+
 	public int getId() {
 		return id;
 	}
