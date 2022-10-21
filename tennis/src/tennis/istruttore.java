@@ -9,6 +9,7 @@ public class istruttore {
 	private char sesso; 
 	private String email; 
 	private String numero; 
+	private String username;
 	private String password; 
 	private int esperienza; 
 	private int oreLezione; 
@@ -101,6 +102,14 @@ public class istruttore {
 
 	public void setPagaOraria(float pagaOraria) {
 		this.pagaOraria = pagaOraria;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 

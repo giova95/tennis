@@ -8,6 +8,7 @@ public class utente {
 	private int eta;
 	private String email;
 	private String numero;
+	private String username;
 	private String password; 
 	private char sesso;
 	
@@ -81,6 +82,16 @@ public class utente {
 
 	public void setSesso(char sesso) {
 		this.sesso = sesso;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
