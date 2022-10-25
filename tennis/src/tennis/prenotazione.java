@@ -78,6 +78,5 @@ public class prenotazione {
 	public void setPrezzo(float prezzo) {
 		this.prezzo = prezzo;
 	}
-	
-	
+
 }

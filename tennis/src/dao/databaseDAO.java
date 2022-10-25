@@ -17,9 +17,9 @@ import tennis.prenotazione;
  * AbstractDAO for API CRUD
  */
 public class databaseDAO {
-	private String url = "jdbc:mysql://localhost:8080/tennisApp?useSSL=false";
+	private String url = "jdbc:mysql://localhost:3306/tennisApp";
 	private String jdbcUsername = "root";
-	private String jdbcPassword = "";
+	private String jdbcPassword = "";//per gilbe root
 
 	// select all tables SQL
 	private static final String SELECT_ALL_USERS = "select * from utente";
