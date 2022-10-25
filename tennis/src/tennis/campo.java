@@ -7,6 +7,7 @@ public class campo {
 	private boolean coperto;
 	private float prezzo;
 	private int valutazione;
+	private String codice;
 	
 	public campo(int id, String tipo, boolean coperto, float prezzo, int valutazione) {
 		super();
@@ -55,6 +56,11 @@ public class campo {
 
 	public void setValutazione(int valutazione) {
 		this.valutazione = valutazione;
+	}
+
+
+	public String getCodice() {
+		return codice;
 	}
 	
 	
