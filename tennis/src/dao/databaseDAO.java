@@ -29,12 +29,12 @@ public class databaseDAO {
 
 	// insert in all tables SQL
 	private static final String INSERT_USERS_SQL = "INSERT INTO utente"
-			+ "  (nome, cognome, eta, sesso, email, telefono, password) VALUES " + " (?, ?, ?, ?. ?, ?, ?);";
+			+ "  (nome, cognome, eta, sesso, email, telefono, username, password) VALUES " + " (?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String INSERT_FIELDS_SQL = "INSERT INTO campo"
-			+ "  (tipo, prezzo, valutazione, coperto) VALUES " + " (?, ?, ?, ?);";
+			+ "  (tipo, prezzo, valutazione, coperto, codice) VALUES " + " (?, ?, ?, ?, ?);";
 	private static final String INSERT_INSTRU_SQL = "INSERT INTO istruttore"
-			+ "  (nome, cognome, eta, sesso, email, telefono, password," + " esperienza, oreLezione, pagaOraria) "
-			+ "VALUES " + " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ "  (nome, cognome, eta, sesso, email, telefono, username, password," + " esperienza, oreLezione, pagaOraria) "
+			+ "VALUES " + " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String INSERT_RESERV_SQL = "INSERT INTO prenotazione"
 			+ "  (dataOra, durata, prezzo, partecipanti, campo, istruttore," + " tipo) VALUES "
 			+ " (?, ?, ?, ?. ?, ?, ?);";
@@ -46,10 +46,10 @@ public class databaseDAO {
 	private static final String DELETE_ISTRU_SQL = "delete from istruttore where id = ?;";
 
 	// update all tables SQL
-	private static final String UPDATE_USERS_SQL = "update utente set sesso = ?, email = ?, telefono = ?, password = ? where id = ?;";
-	private static final String UPDATE_FIELDS_SQL = "update users set prezzo = ?, valutazione = ?, coperto = ? where id = ?;";
+	private static final String UPDATE_USERS_SQL = "update utente set sesso = ?, email = ?, telefono = ?, username = ?, password = ? where id = ?;";
+	private static final String UPDATE_FIELDS_SQL = "update users set prezzo = ?, valutazione = ?, coperto = ?, codice = ? where id = ?;";
 	private static final String UPDATE_REVERS_SQL = "update users set  dataOra = ?, durata = ?, prezzo = ? where id = ?;";
-	private static final String UPDATE_INSTRU_SQL = "update users set sesso = ?, email = ?, telefono = ?, password = ?, esperienza = ?"
+	private static final String UPDATE_INSTRU_SQL = "update users set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?"
 			+ " oreLezione = ?, pagaOraria = ? where id = ?;";
 
 	public databaseDAO() {
@@ -92,8 +92,9 @@ public class databaseDAO {
 				char sesso = rs.getString("sesso").charAt(0);
 				String email = rs.getString("email");
 				String telephone = rs.getString("telefono");
+				String user = rs.getString("username");
 				String password = rs.getString("password");
-				users.add(new utente(id, name, surname, age, email, telephone, password, sesso));
+				users.add(new utente(id, name, surname, age, email, telephone, user, password, sesso));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -121,7 +122,8 @@ public class databaseDAO {
 				float price = rs.getFloat("prezzo");
 				int evaluation = rs.getInt("valutazione");
 				boolean cover = (rs.getBoolean("coperto"));
-				fields.add(new campo(id, type, cover, price, evaluation));
+				String code = rs.getString("codice");
+				fields.add(new campo(id, type, cover, price, evaluation, code));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -152,11 +154,12 @@ public class databaseDAO {
 				char sesso = rs.getString("sesso").charAt(0);
 				String email = rs.getString("email");
 				String telephone = rs.getString("telefono");
+				String user = rs.getString("username");
 				String password = rs.getString("password");
 				int experience = rs.getInt("esperienza");
 				int hour = rs.getInt("oreLezione");
 				float paid = rs.getFloat("pagaOraria");
-				istr.add(new istruttore(id, name, surname, age, sesso, email, telephone, password, experience, hour,
+				istr.add(new istruttore(id, name, surname, age, sesso, email, telephone, user, password, experience, hour,
 						paid));
 			}
 		} catch (SQLException e) {
@@ -209,7 +212,8 @@ public class databaseDAO {
 			preparedStatement.setString(4, Character.toString(user.getSesso()));
 			preparedStatement.setString(5, user.getEmail());
 			preparedStatement.setString(6, user.getNumero());
-			preparedStatement.setString(7, user.getPassword());
+			preparedStatement.setString(7, user.getUsername());
+			preparedStatement.setString(8, user.getPassword());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -228,10 +232,11 @@ public class databaseDAO {
 			preparedStatement.setString(4, Character.toString(istr.getSesso()));
 			preparedStatement.setString(5, istr.getEmail());
 			preparedStatement.setString(6, istr.getNumero());
-			preparedStatement.setString(7, istr.getPassword());
-			preparedStatement.setInt(8, istr.getEsperienza());
-			preparedStatement.setInt(9, istr.getOreLezione()); 
-			preparedStatement.setFloat(10, istr.getPagaOraria());
+			preparedStatement.setString(7, istr.getUsername());
+			preparedStatement.setString(8, istr.getPassword());
+			preparedStatement.setInt(9, istr.getEsperienza());
+			preparedStatement.setInt(10, istr.getOreLezione()); 
+			preparedStatement.setFloat(11, istr.getPagaOraria());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -248,6 +253,7 @@ public class databaseDAO {
 			preparedStatement.setFloat(2, c.getPrezzo());
 			preparedStatement.setInt(3, c.getValutazione());
 			preparedStatement.setBoolean(4, c.isCoperto());
+			preparedStatement.setString(5, c.getCodice());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -328,7 +334,8 @@ public class databaseDAO {
 			statement.setString(4, Character.toString(user.getSesso()));
 			statement.setString(5, user.getEmail());
 			statement.setString(6, user.getNumero());
-			statement.setString(7, user.getPassword());
+			statement.setString(7, user.getUsername());
+			statement.setString(8, user.getPassword());
 			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 
@@ -347,6 +354,7 @@ public class databaseDAO {
 			statement.setFloat(2, c.getPrezzo());
 			statement.setInt(3, c.getValutazione());
 			statement.setBoolean(4, c.isCoperto());
+			statement.setString(5, c.getCodice());
 			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
@@ -384,10 +392,11 @@ public class databaseDAO {
 			statement.setString(4, Character.toString(istr.getSesso()));
 			statement.setString(5, istr.getEmail());
 			statement.setString(6, istr.getNumero());
-			statement.setString(7, istr.getPassword());
-			statement.setInt(8, istr.getEsperienza());
-			statement.setInt(9, istr.getOreLezione());
-			statement.setFloat(10, istr.getPagaOraria());
+			statement.setString(7, istr.getUsername());
+			statement.setString(8, istr.getPassword());
+			statement.setInt(9, istr.getEsperienza());
+			statement.setInt(10, istr.getOreLezione());
+			statement.setFloat(11, istr.getPagaOraria());
 			System.out.println(statement);
 
 			rowUpdated = statement.executeUpdate() > 0;
