@@ -1,7 +1,4 @@
 package tennis;
-import java.util.List;
-
-import dao.databaseDAO;
 
 public class utente {
 
@@ -14,8 +11,6 @@ public class utente {
 	private String username;
 	private String password; 
 	private char sesso;
-	
-	databaseDAO dao;
 	
 	public utente(int id, String nome, String cognome, int eta, String email, String numero, String username, String password,
 			char sesso) {
@@ -98,8 +93,5 @@ public class utente {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	public List<utente> selectId() {
-		return dao.selectUsers();
-	}
+	
 }
