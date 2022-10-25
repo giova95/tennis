@@ -37,7 +37,7 @@ public class databaseDAO {
 			+ "VALUES " + " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String INSERT_RESERV_SQL = "INSERT INTO prenotazione"
 			+ "  (dataOra, durata, prezzo, partecipanti, campo, istruttore," + " tipo) VALUES "
-			+ " (?, ?, ?, ?. ?, ?, ?);";
+			+ " (?, ?, ?, ?, ?, ?, ?);";
 
 	// delete from all tables SQL
 	private static final String DELETE_USERS_SQL = "delete from utente where id = ?;";
@@ -47,9 +47,9 @@ public class databaseDAO {
 
 	// update all tables SQL
 	private static final String UPDATE_USERS_SQL = "update utente set sesso = ?, email = ?, telefono = ?, username = ?, password = ? where id = ?;";
-	private static final String UPDATE_FIELDS_SQL = "update users set prezzo = ?, valutazione = ?, coperto = ?, codice = ? where id = ?;";
-	private static final String UPDATE_REVERS_SQL = "update users set  dataOra = ?, durata = ?, prezzo = ? where id = ?;";
-	private static final String UPDATE_INSTRU_SQL = "update users set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?"
+	private static final String UPDATE_FIELDS_SQL = "update campo set prezzo = ?, valutazione = ?, coperto = ?, codice = ? where id = ?;";
+	private static final String UPDATE_REVERS_SQL = "update prenotazione set  dataOra = ?, durata = ?, prezzo = ? where id = ?;";
+	private static final String UPDATE_INSTRU_SQL = "update istruttore set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?"
 			+ " oreLezione = ?, pagaOraria = ? where id = ?;";
 
 	public databaseDAO() {
@@ -191,7 +191,7 @@ public class databaseDAO {
 				String part = rs.getString("partecipanti");
 				int field = rs.getInt("campo");
 				int istr = rs.getInt("istruttore");
-				String type = rs.getString("tipo");
+				int type = rs.getInt("tipo");
 				reserv.add(new prenotazione(id, date, durata, price, part, field, istr, type));
 			}
 		} catch (SQLException e) {
@@ -272,7 +272,7 @@ public class databaseDAO {
 			preparedStatement.setString(4, p.getPartecipanti());
 			preparedStatement.setInt(5, p.getCampo());
 			preparedStatement.setInt(6, p.getIstruttore());
-			preparedStatement.setString(7, p.getTipo());
+			preparedStatement.setInt(7, p.getTipo());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -323,7 +323,7 @@ public class databaseDAO {
 	}
 
 //CRUD API PATCH
-
+	
 	public boolean updateUser(utente user) throws SQLException {
 		boolean rowUpdated = false;
 		try (Connection connection = getConnection();
@@ -370,10 +370,7 @@ public class databaseDAO {
 			statement.setString(1, p.getDataOra());
 			statement.setInt(2, p.getDurata());
 			statement.setFloat(3, p.getPrezzo());
-			statement.setString(4, p.getPartecipanti());
-			statement.setInt(5, p.getCampo());
-			statement.setInt(6, p.getIstruttore());
-			statement.setString(7, p.getTipo());
+			statement.setInt(4, p.getId());
 			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {

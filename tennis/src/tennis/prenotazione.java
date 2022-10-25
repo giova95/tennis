@@ -9,10 +9,10 @@ public class prenotazione {
 	private String partecipanti;
 	private int campo;
 	private int istruttore;
-	private String tipo;
+	private int tipo;
 	
 	public prenotazione(int id, String dataOra, int durata, float prezzo, String partecipanti, int campo,
-			int istruttore, String tipo) {
+			int istruttore, int tipo) {
 		super();
 		this.id = id;
 		this.dataOra = dataOra;
@@ -45,7 +45,7 @@ public class prenotazione {
 	}
 
 
-	public String getTipo() {
+	public int getTipo() {
 		return tipo;
 	}
 
