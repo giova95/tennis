@@ -9,13 +9,14 @@ public class campo {
 	private int valutazione;
 	private String codice;
 	
-	public campo(int id, String tipo, boolean coperto, float prezzo, int valutazione) {
+	public campo(int id, String tipo, boolean coperto, float prezzo, int valutazione, String codice) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
 		this.coperto = coperto;
 		this.prezzo = prezzo;
 		this.valutazione = valutazione;
+		this.codice = codice;
 	}
 
 

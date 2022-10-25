@@ -14,7 +14,7 @@ public class utente {
 	
 	
 	
-	public utente(int id, String nome, String cognome, int eta, String email, String numero, String password,
+	public utente(int id, String nome, String cognome, int eta, String email, String numero, String username, String password,
 			char sesso) {
 		super();
 		this.id = id;
@@ -23,6 +23,7 @@ public class utente {
 		this.eta = eta;
 		this.email = email;
 		this.numero = numero;
+		this.username = username;
 		this.password = password;
 		this.sesso = sesso;
 	}

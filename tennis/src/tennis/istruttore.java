@@ -16,7 +16,7 @@ public class istruttore {
 	private float pagaOraria; 
 	
 	public istruttore(int id, String nome, String cognome, int eta, char sesso, String email, String numero,
-			String password, int esperienza, int oreLezione, float pagaOraria) {
+			String username, String password, int esperienza, int oreLezione, float pagaOraria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -25,6 +25,7 @@ public class istruttore {
 		this.sesso = sesso;
 		this.email = email;
 		this.numero = numero;
+		this.username = username;
 		this.password = password;
 		this.esperienza = esperienza;
 		this.oreLezione = oreLezione;
