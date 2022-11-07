@@ -37,6 +37,9 @@ public class databaseDAO {
 	private static final String INSERT_INSTRU_SQL = "INSERT INTO istruttore"
 			+ "  (nome, cognome, eta, sesso, email, telefono, username, password," + " esperienza, oreLezione, pagaOraria) "
 			+ "VALUES " + " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final String INSERT_RESERV_NO_ISTR_SQL = "INSERT INTO prenotazione"
+			+ "  (dataOra, durata, prezzo, partecipanti, campo, tipo, istruttore) VALUES "
+			+ " (?, ?, ?, ?, ?, ?, NULL);";
 	private static final String INSERT_RESERV_SQL = "INSERT INTO prenotazione"
 			+ "  (dataOra, durata, prezzo, partecipanti, campo, istruttore," + " tipo) VALUES "
 			+ " (?, ?, ?, ?, ?, ?, ?);";
@@ -309,6 +312,24 @@ public class databaseDAO {
 			preparedStatement.setInt(5, p.getCampo());
 			preparedStatement.setInt(6, p.getIstruttore());
 			preparedStatement.setInt(7, p.getTipo());
+			System.out.println(preparedStatement);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+	}
+	
+	public void insertReservNoIstr(prenotazione p) throws SQLException {
+		System.out.println(INSERT_RESERV_SQL);
+		// try-with-resource statement will auto close the connection.
+		try (Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RESERV_NO_ISTR_SQL)) {
+			preparedStatement.setString(1, p.getDataOra());
+			preparedStatement.setInt(2, p.getDurata());
+			preparedStatement.setFloat(3, p.getPrezzo());
+			preparedStatement.setString(4, p.getPartecipanti());
+			preparedStatement.setInt(5, p.getCampo());
+			preparedStatement.setInt(6, p.getTipo());
 			System.out.println(preparedStatement);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {

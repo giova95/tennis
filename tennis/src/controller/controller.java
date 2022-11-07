@@ -14,6 +14,10 @@ import tennis.prenotazione;
 import tennis.utente;
 
 public class controller {
+	
+	public void controller() {
+		
+	}
 
 	public void registrazione() throws IOException, SQLException {
 
@@ -187,15 +191,29 @@ public class controller {
 
 		////////////////////////////////////////////////////////////////////////////////////
 		if (durata == 1) {
-			prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
-			dao.insertReserv(p);
+			if(istruttore == 0) {
+				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
+				dao.insertReservNoIstr(p);
+			}
+			else {
+				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
+				dao.insertReserv(p);
+			}
 		} else if (durata == 2) {
 			int ora2 = ora + 1;
 			String dataOra2 = dataOra.substring(0, 11) + ora2 + ":00:00";
-			prenotazione p1 = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
-			prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
-			dao.insertReserv(p1);
-			dao.insertReserv(p2);
+			if(istruttore == 0) {
+				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
+				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
+				dao.insertReservNoIstr(p1);
+				dao.insertReservNoIstr(p2);
+			}
+			else {
+				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
+				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
+				dao.insertReserv(p1);
+				dao.insertReserv(p2);
+			}
 		}
 
 	}
@@ -214,8 +232,8 @@ public class controller {
 			System.out.println(prenotazioni.get(i).getId() + ") " + "Data e ora: " + prenotazioni.get(i).getDataOra() + " Durata: " + prenotazioni.get(i).getDurata());
 		}
 		System.out.println("Digita il numero della prenotazione che si desidera modificare: ");
-		String i = br.readLine();
-		prenotazione = Integer.parseInt(i);
+		String pre = br.readLine();
+		prenotazione = Integer.parseInt(pre);
 		
 		System.out.println("Inserisci la data e l'ora (es. YYY-MM-DD HH): ");
 		String dataOra = br.readLine();
@@ -269,18 +287,30 @@ public class controller {
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		if(durata == 1) {
-			prenotazione p = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
-			dao.updateReserv(p);
+		int durataOld = 0;
+		int idElimina = 0;
+		
+		for(int i=0; i < prenotazioni.size(); i++) {
+			if(prenotazione == prenotazioni.get(i).getId()) {
+				durataOld = prenotazioni.get(i).getDurata();
+				idElimina = prenotazioni.get(i+1).getId();
+			}
 		}
-		else if(durata == 2) {
-			int ora2 = ora + 1;
-			String dataOra2 = dataOra.substring(0, 11) + ora2 + ":00:00";
-			prenotazione p1 = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
-			prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, "", campo, istruttore, 0);
-			dao.updateReserv(p1);
-			dao.insertReserv(p2);
-	//TODO FAI IL CONTROLLO SUL VECCIO VALORE DI DURATA, SE NON CAMBIA NON FARE NULLA, SE ERA 1 E DIVENTA  FAI INSERT, SE ERA 2 E DIVENTA 1 FAI DELETE SU SECONDA ORA.
+		
+		if(durata != durataOld) {
+			if(durata == 1) {
+				prenotazione p = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
+				dao.updateReserv(p);
+				dao.deleteReserv(idElimina);
+			}
+			else if(durata == 2) {
+				int ora2 = ora + 1;
+				String dataOra2 = dataOra.substring(0, 11) + ora2 + ":00:00";
+				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
+				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, "", campo, istruttore, 0);
+				dao.updateReserv(p1);
+				dao.insertReserv(p2);
+			}
 		}
 	}
 
