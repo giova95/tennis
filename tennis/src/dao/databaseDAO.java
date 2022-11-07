@@ -12,6 +12,7 @@ import tennis.utente;
 import tennis.campo;
 import tennis.istruttore;
 import tennis.prenotazione;
+import tennis.gestore;
 
 /**
  * AbstractDAO for API CRUD
@@ -26,6 +27,7 @@ public class databaseDAO {
 	private static final String SELECT_ALL_FIELDS = "select * from campo";
 	private static final String SELECT_ALL_RESERV = "select * from prenotazione";
 	private static final String SELECT_ALL_INSTRU = "select * from istruttore";
+	private static final String SELECT_MANAGER = "select * from gestore";
 
 	// insert in all tables SQL
 	private static final String INSERT_USERS_SQL = "INSERT INTO utente"
@@ -43,12 +45,12 @@ public class databaseDAO {
 	private static final String DELETE_USERS_SQL = "delete from utente where id = ?;";
 	private static final String DELETE_FIELDS_SQL = "delete from campo where id = ?;";
 	private static final String DELETE_RESERV_SQL = "delete from prenotazione where id = ?;";
-	private static final String DELETE_ISTRU_SQL = "delete from istruttore where id = ?;";
+	private static final String DELETE_INSTRU_SQL = "delete from istruttore where id = ?;";
 
 	// update all tables SQL
 	private static final String UPDATE_USERS_SQL = "update utente set sesso = ?, email = ?, telefono = ?, username = ?, password = ? where id = ?;";
-	private static final String UPDATE_FIELDS_SQL = "update campo set prezzo = ?, valutazione = ?, coperto = ?, codice = ? where id = ?;";
-	private static final String UPDATE_REVERS_SQL = "update prenotazione set  dataOra = ?, durata = ?, prezzo = ? where id = ?;";
+	private static final String UPDATE_FIELDS_SQL = "update campo set prezzo = ?, valutazione = ?, coperto = ? where id = ?;";
+	private static final String UPDATE_RESERV_SQL = "update prenotazione set  dataOra = ?, durata = ?, prezzo = ? where id = ?;";
 	private static final String UPDATE_INSTRU_SQL = "update istruttore set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?"
 			+ " oreLezione = ?, pagaOraria = ? where id = ?;";
 
@@ -200,6 +202,40 @@ public class databaseDAO {
 		return reserv;
 	}
 
+	public List<gestore> selectManager() {
+
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		List<gestore> manager = new ArrayList<>();
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MANAGER);) {
+			System.out.println(preparedStatement);
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Step 4: Process the ResultSet object.
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("nome");
+				String surname = rs.getString("cognome");
+				int age = rs.getInt("eta");
+				char sesso = rs.getString("sesso").charAt(0);
+				String email = rs.getString("email");
+				String telephone = rs.getString("telefono");
+				String user = rs.getString("username");
+				String password = rs.getString("password");
+				String vat = rs.getString("partitaIva");
+				int field = rs.getInt("campo");
+				manager.add(new gestore(id, name, surname, age, email, telephone, user, password, sesso, vat, field));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return manager;
+	}
+	
 	// CRUD API POST/PUT
 	public void insertUser(utente user) throws SQLException {
 		System.out.println(INSERT_USERS_SQL);
@@ -280,10 +316,11 @@ public class databaseDAO {
 		}
 	}
 
-//CRUD API DELETE
+//CRUD API DELETE 
+	//TODO: AGGIUSTARE FEEDBACK DELETE
 
 	public boolean deleteUser(int id) throws SQLException {
-		boolean rowDeleted;
+		boolean rowDeleted = false;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
 			statement.setInt(1, id);
@@ -293,7 +330,7 @@ public class databaseDAO {
 	}
 
 	public boolean deleteField(int id) throws SQLException {
-		boolean rowDeleted;
+		boolean rowDeleted = false;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(DELETE_FIELDS_SQL);) {
 			statement.setInt(1, id);
@@ -303,7 +340,7 @@ public class databaseDAO {
 	}
 
 	public boolean deleteReserv(int id) throws SQLException {
-		boolean rowDeleted;
+		boolean rowDeleted = false;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(DELETE_RESERV_SQL);) {
 			statement.setInt(1, id);
@@ -313,9 +350,9 @@ public class databaseDAO {
 	}
 
 	public boolean deleteInstru(int id) throws SQLException {
-		boolean rowDeleted;
+		boolean rowDeleted = false;
 		try (Connection connection = getConnection();
-				PreparedStatement statement = connection.prepareStatement(DELETE_ISTRU_SQL);) {
+				PreparedStatement statement = connection.prepareStatement(DELETE_INSTRU_SQL);) {
 			statement.setInt(1, id);
 			rowDeleted = statement.executeUpdate() > 0;
 		}
@@ -350,11 +387,10 @@ public class databaseDAO {
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_FIELDS_SQL);) {
 
-			statement.setString(1, c.getTipo());
-			statement.setFloat(2, c.getPrezzo());
-			statement.setInt(3, c.getValutazione());
-			statement.setBoolean(4, c.isCoperto());
-			statement.setString(5, c.getCodice());
+			statement.setFloat(1, c.getPrezzo());
+			statement.setInt(2, c.getValutazione());
+			statement.setBoolean(3, c.isCoperto());
+			statement.setInt(4, c.getId());
 			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
@@ -366,7 +402,7 @@ public class databaseDAO {
 	public boolean updateReserv(prenotazione p) throws SQLException {
 		boolean rowUpdated = false;
 		try (Connection connection = getConnection();
-				PreparedStatement statement = connection.prepareStatement(UPDATE_REVERS_SQL);) {
+				PreparedStatement statement = connection.prepareStatement(UPDATE_RESERV_SQL);) {
 			statement.setString(1, p.getDataOra());
 			statement.setInt(2, p.getDurata());
 			statement.setFloat(3, p.getPrezzo());
