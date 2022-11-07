@@ -66,13 +66,30 @@ public class gestore {
 	}
 
 	public void modificaCampo() throws IOException, SQLException {
-		// TODO: fix id e aggiungi vista campi
 		databaseDAO dao = new databaseDAO();
-
+		List<campo> fields = dao.selectFields();
 		String tipo = "";
 		String codice = "";
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("I TUOI CAMPI: ");
+		for (int i = 0; i < fields.size(); i++) {
+			System.out.println("Codice: " + fields.get(i).getId());
+			System.out.println("Tipo: " + fields.get(i).getTipo());
+			System.out.println("Coperto: ");
+			if (fields.get(i).isCoperto()) {
+				System.out.println(" Sì ");
+			} else {
+				System.out.println("No");
+			}
+			System.out.println("Valutazione: " + fields.get(i).getValutazione());
+			System.out.println("Prezzo: " + fields.get(i).getPrezzo());
+		}
+		
+		System.out.println("Inserisci codice campo da modificare: ");
+		String cod = br.readLine();
+		int id = Integer.parseInt(cod);
+		
 		System.out.println("Campo coperto? [Yes o No] ");
 		String c = br.readLine();
 		boolean coperto = false;
@@ -86,8 +103,11 @@ public class gestore {
 		System.out.println("Inserisci valutazione: [0-5]");
 		int valuta = Integer.parseInt(br.readLine());
 
-		campo field = new campo(0, tipo, coperto, prezzo, valuta, codice);
-		dao.updateField(field);
+		campo field = new campo(id, tipo, coperto, prezzo, valuta, codice);
+		
+		if(dao.updateField(field)) {
+			System.out.println("Campo modificato correttamente!");
+		}
 
 	}
 
@@ -166,10 +186,10 @@ public class gestore {
 
 	public void modificaIstruttore() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
-		int istruttore = 0;
 		List<istruttore> istruttori = dao.selectInstructors();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+		System.out.println("REGISTRO ISTRUTTORI: ");
 		for (int i = 0; i < istruttori.size(); i++) {
 			System.out.println(istruttori.get(i).getId() + ") " + istruttori.get(i).getNome()
 					+ istruttori.get(i).getCognome());
@@ -177,7 +197,7 @@ public class gestore {
 
 		System.out.println("Digita il numero relativo all'istruttore che si desidera modificare: ");
 		String a = br.readLine();
-		istruttore = Integer.parseInt(a);
+		int istruttore = Integer.parseInt(a);
 
 		System.out.println("Inserisci l'username: ");
 		String usr = br.readLine();
@@ -218,11 +238,8 @@ public class gestore {
 
 		System.out.println("REGISTRO ISTRUTTORI: ");
 		for (int i = 0; i < istr.size(); i++) {
-			System.out.println("Codice: " + istr.get(i).getId());
-			System.out.println("Nome: " + istr.get(i).getNome());
-			System.out.println("Cognome: " + istr.get(i).getCognome());
-			System.out.println("Email: " + istr.get(i).getEmail());
-			System.out.println("Sesso: " + istr.get(i).getSesso());
+			System.out.println(istr.get(i).getId() + ") " + istr.get(i).getNome()
+					+ istr.get(i).getCognome());
 		}
 
 		System.out.println("Digita il codice dell'istruttore da eliminare: ");
@@ -234,23 +251,58 @@ public class gestore {
 
 	}
 
+	public void modificaUtente() throws IOException, SQLException {
+		databaseDAO dao = new databaseDAO();
+		List<utente> users = dao.selectUsers();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("REGISTRO UTENTI: ");
+		
+		for (int i = 0; i < users.size(); i++) {
+			System.out.println(users.get(i).getId() + ") " + users.get(i).getNome()
+					+ users.get(i).getCognome());
+		}
+		
+		System.out.println("Digita il codice dell'utente da eliminare: ");
+		String c = br.readLine();
+		int codice = Integer.parseInt(c);
+		
+		System.out.println("Inserisci l'username: ");
+		String usr = br.readLine();
+
+		System.out.println("Inserisci la password: ");
+		String psw = br.readLine();
+		
+		System.out.println("Inserisci il sesso: ");
+		String se = br.readLine();
+		char s = se.charAt(0);
+
+		System.out.println("Inserisci la email: ");
+		String email = br.readLine();
+
+		System.out.println("Inserisci il numero di telefono: ");
+		String numero = br.readLine();
+		
+		utente u = new utente(codice, "", "", 0, email, numero, usr, psw, s);
+		dao.updateUser(u);
+	}
+	
 	public void eliminaUtente() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 		List<utente> users = dao.selectUsers();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.println("REGISTRO ISTRUTTORI: ");
+		System.out.println("REGISTRO UTENTI: ");
+		
 		for (int i = 0; i < users.size(); i++) {
-			System.out.println("Codice: " + users.get(i).getId());
-			System.out.println("Nome: " + users.get(i).getNome());
-			System.out.println("Cognome: " + users.get(i).getCognome());
-			System.out.println("Email: " + users.get(i).getEmail());
-			System.out.println("Sesso: " + users.get(i).getSesso());
+			System.out.println(users.get(i).getId() + ") " + users.get(i).getNome()
+					+ users.get(i).getCognome());
 		}
 
 		System.out.println("Digita il codice dell'utente da eliminare: ");
 		String c = br.readLine();
 		int codice = Integer.parseInt(c);
+		
 		if (dao.deleteUser(codice)) {
 			System.out.println("Utente eliminato correttamente");
 		}
