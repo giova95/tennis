@@ -235,7 +235,7 @@ public class controller {
 		String pre = br.readLine();
 		prenotazione = Integer.parseInt(pre);
 		
-		System.out.println("Inserisci la data e l'ora (es. YYY-MM-DD HH): ");
+		System.out.println("Inserisci la data e l'ora (es. YYYY-MM-DD HH): ");
 		String dataOra = br.readLine();
 		dataOra = dataOra + ":00:00";
 		
@@ -299,7 +299,7 @@ public class controller {
 		
 		if(durata != durataOld) {
 			if(durata == 1) {
-				prenotazione p = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
+				prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
 				dao.updateReserv(p);
 				dao.deleteReserv(idElimina);
 			}
@@ -309,8 +309,17 @@ public class controller {
 				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, "", campo, istruttore, 0);
 				dao.updateReserv(p1);
-				dao.insertReserv(p2);
+				if(istruttore == 0) {
+					dao.insertReservNoIstr(p2);
+				}
+				else {
+					dao.insertReserv(p2);
+				}
 			}
+		}
+		else {
+			prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+			dao.updateReserv(p);
 		}
 	}
 
