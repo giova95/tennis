@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.databaseDAO;
-import tennis.istruttore;
-import tennis.utente;
+import model.istruttore;
+import model.utente;
 
 public class main2 {
 	
