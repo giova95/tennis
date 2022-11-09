@@ -1,4 +1,4 @@
-package tennis;
+package model;
 
 public class utente {
 

@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import tennis.utente;
-import tennis.campo;
-import tennis.istruttore;
-import tennis.prenotazione;
-import tennis.gestore;
+import model.campo;
+import model.gestore;
+import model.istruttore;
+import model.prenotazione;
+import model.utente;
 
 /**
  * AbstractDAO for API CRUD

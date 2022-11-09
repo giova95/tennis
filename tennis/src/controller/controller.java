@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dao.databaseDAO;
-import tennis.campo;
-import tennis.gestore;
-import tennis.istruttore;
-import tennis.prenotazione;
-import tennis.utente;
+import model.campo;
+import model.gestore;
+import model.istruttore;
+import model.prenotazione;
+import model.utente;
 
 public class controller {
 	
