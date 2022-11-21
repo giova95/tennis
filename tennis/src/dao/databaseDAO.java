@@ -230,8 +230,7 @@ public class databaseDAO {
 				String user = rs.getString("username");
 				String password = rs.getString("password");
 				String vat = rs.getString("partitaIva");
-				int field = rs.getInt("campo");
-				manager.add(new gestore(id, name, surname, age, email, telephone, user, password, sesso, vat, field));
+				manager.add(new gestore(id, name, surname, age, email, telephone, user, password, sesso, vat));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
