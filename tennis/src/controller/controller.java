@@ -92,7 +92,7 @@ public class controller {
 		return response;
 	}
 
-	public void nuovaPrenotazione() throws IOException, SQLException {
+	public void nuovaPrenotazione() throws IOException, SQLException { // TODO incrementa ore lezione istruttore impegnato nell aprenotazione, decrementa se viene fatta la delete
 		databaseDAO dao = new databaseDAO();
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
