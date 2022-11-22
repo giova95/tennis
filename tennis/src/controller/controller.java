@@ -340,18 +340,33 @@ public class controller {
 		}
 	}
 
-	public void eliminaPrenotazione() throws IOException, SQLException {
+	public void eliminaPrenotazioneUtente(String username) throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 		List<prenotazione> reserv = dao.selectReserv();
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));	
+		List<prenotazione> myPrenot = new ArrayList<>();		
+				
+		int prenotazione = 0;
+		String[] partecipanti;
+		String p;
+		
+		for(int i=0; i < reserv.size() ; i++) {
+			p = reserv.get(i).getPartecipanti();
+			partecipanti = p.split(",");
+			for(int j=0; j<partecipanti.length; j++) {
+				if(username.equals(partecipanti[j])) {
+					myPrenot.add(reserv.get(i));
+				}
+			}
+		}
 
 		System.out.println("LE TUE PRENOTAZIONI");
-		for (int i = 0; i < reserv.size(); i++) {
-			System.out.println("codice: " + reserv.get(i).getId());
-			System.out.println("partecipanti: " + reserv.get(i).getPartecipanti());
-			System.out.println("data e ora: " + reserv.get(i).getDataOra());
-			System.out.println("campo: " + reserv.get(i).getCampo());
-			System.out.println("istuttore: " + reserv.get(i).getIstruttore());
+		for (int i = 0; i < myPrenot.size(); i++) {
+			System.out.println("codice: " + myPrenot.get(i).getId());
+			System.out.println("partecipanti: " + myPrenot.get(i).getPartecipanti());
+			System.out.println("data e ora: " + myPrenot.get(i).getDataOra());
+			System.out.println("campo: " + myPrenot.get(i).getCampo());
+			System.out.println("istuttore: " + myPrenot.get(i).getIstruttore());
 		}
 
 		System.out.println("Digita il codice della prenotazione da eliminare: ");

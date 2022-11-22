@@ -14,6 +14,7 @@ public class istruttore {
 	private int esperienza; 
 	private int oreLezione; 
 	private float pagaOraria; 
+	private tariffario t;
 	
 	public istruttore(int id, String nome, String cognome, int eta, char sesso, String email, String numero,
 			String username, String password, int esperienza, int oreLezione, float pagaOraria) {
@@ -112,6 +113,10 @@ public class istruttore {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
+	public float calcoloStipendio(istruttore this) {
+		
+		return t.calcolaStipendioIstruttore(this);
+	}
 
 	}

@@ -69,7 +69,7 @@ public class menuGestore {
 		controller con = new controller();
 		int c;
 		do {
-			System.out.println("1)Inserisci nuova prenotazione \n 2)Modifica Prenotazione \n 3)Elimina Prenotazione \n 4)HomePage");
+			System.out.println("1)Inserisci nuova prenotazione \n2)Modifica Prenotazione \n3)Elimina Prenotazione \n4)HomePage");
 			System.out.println("Scegli una delle opzioni[1-4]:");
 			c = scanner.nextInt();
 			switch (c) {
@@ -84,7 +84,7 @@ public class menuGestore {
 >>>>>>> 42003ed aggiornato modifica prenotazione utente
 				break;
 			case 3:
-				con.eliminaPrenotazione();
+				//con.eliminaPrenotazione(); //TODO modifica prenotazione gestore, vede tutte le prenotazioni
 				break;
 			case 4:
 				System.out.println("Caricamento Homepage...");
