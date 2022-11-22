@@ -20,7 +20,7 @@ import model.utente;
 public class databaseDAO {
 	private String url = "jdbc:mysql://localhost:3306/tennisApp";
 	private String jdbcUsername = "root";
-	private String jdbcPassword = "root";//per gilbe root
+	private String jdbcPassword = "";//per gilbe root
 
 	// select all tables SQL
 	private static final String SELECT_ALL_USERS = "select * from utente";
@@ -337,7 +337,6 @@ public class databaseDAO {
 	}
 
 //CRUD API DELETE 
-	//TODO: AGGIUSTARE FEEDBACK DELETE
 
 	public boolean deleteUser(int id) throws SQLException {
 		boolean rowDeleted = false;
@@ -385,14 +384,12 @@ public class databaseDAO {
 		boolean rowUpdated = false;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);) {
-			statement.setString(1, user.getNome());
-			statement.setString(2, user.getCognome());
-			statement.setInt(3, user.getEta());
-			statement.setString(4, Character.toString(user.getSesso()));
-			statement.setString(5, user.getEmail());
-			statement.setString(6, user.getNumero());
-			statement.setString(7, user.getUsername());
-			statement.setString(8, user.getPassword());
+			statement.setString(1, Character.toString(user.getSesso()));
+			statement.setString(2, user.getEmail());
+			statement.setString(3, user.getNumero());
+			statement.setString(4, user.getUsername());
+			statement.setString(5, user.getPassword());
+			statement.setInt(6, user.getId());
 			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 
@@ -401,12 +398,11 @@ public class databaseDAO {
 		}
 		return rowUpdated;
 	}
-
+	
 	public boolean updateField(campo c) throws SQLException {
 		boolean rowUpdated = false;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_FIELDS_SQL);) {
-
 			statement.setFloat(1, c.getPrezzo());
 			statement.setInt(2, c.getValutazione());
 			statement.setBoolean(3, c.isCoperto());
@@ -439,17 +435,15 @@ public class databaseDAO {
 		boolean rowUpdated = false;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_INSTRU_SQL);) {
-			statement.setString(1, istr.getNome());
-			statement.setString(2, istr.getCognome());
-			statement.setInt(3, istr.getEta());
-			statement.setString(4, Character.toString(istr.getSesso()));
-			statement.setString(5, istr.getEmail());
-			statement.setString(6, istr.getNumero());
-			statement.setString(7, istr.getUsername());
-			statement.setString(8, istr.getPassword());
-			statement.setInt(9, istr.getEsperienza());
-			statement.setInt(10, istr.getOreLezione());
-			statement.setFloat(11, istr.getPagaOraria());
+			statement.setString(1, Character.toString(istr.getSesso()));
+			statement.setString(2, istr.getEmail());
+			statement.setString(3, istr.getNumero());
+			statement.setString(4, istr.getUsername());
+			statement.setString(5, istr.getPassword());
+			statement.setInt(6, istr.getEsperienza());
+			statement.setInt(7, istr.getOreLezione());
+			statement.setFloat(8, istr.getPagaOraria());
+			statement.setInt(9, istr.getId());
 			System.out.println(statement);
 
 			rowUpdated = statement.executeUpdate() > 0;

@@ -92,7 +92,7 @@ public class controller {
 		return response;
 	}
 
-	public void nuovaPrenotazione() throws IOException, SQLException { // TODO incrementa ore lezione istruttore impegnato nell aprenotazione, decrementa se viene fatta la delete
+	public void nuovaPrenotazione() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -223,6 +223,135 @@ public class controller {
 
 	}
 
+	public void modificaPrenotazione() throws SQLException, IOException {
+		databaseDAO dao = new databaseDAO();
+		List<prenotazione> prenotazioni = dao.selectReserv();
+		
+		
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+		
+		int prenotazione = 0;
+		
+		for(int i=0; i < prenotazioni.size() ; i++) {
+			System.out.println(prenotazioni.get(i).getId() + ") " + "Data e ora: " + prenotazioni.get(i).getDataOra() + " Durata: " + prenotazioni.get(i).getDurata());
+		}
+		System.out.println("Digita il numero della prenotazione che si desidera modificare: ");
+		String pre = br.readLine();
+		prenotazione = Integer.parseInt(pre);
+		
+		System.out.println("Inserisci la data e l'ora (es. YYYY-MM-DD HH): ");
+		String dataOra = br.readLine();
+		dataOra = dataOra + ":00:00";
+		
+		System.out.println("Inserisci il numero di ore della prenotazione (1 o 2): ");
+		String d = br.readLine();
+		System.out.println(d);
+		int durata = Integer.parseInt(d);
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// METODO DI TARIFFARIO PER IL CALCOLO DEL PREZZO
+		float prezzoIstr = 0;
+		float prezzoLuci = 0;
+		float prezzoCampo = 0;
+		float totale;
+		int campo = 0;
+		int istruttore = 0;
+		
+		List<istruttore> istruttori = dao.selectInstructors();
+		List<campo> campi = dao.selectFields();
+		
+		for(int j=0; j < prenotazioni.size(); j++) {
+			if(prenotazioni.get(j).getId() == prenotazione) {
+				istruttore = prenotazioni.get(j).getIstruttore();
+				campo = prenotazioni.get(j).getCampo();
+			}
+		}
+		
+		for(int j=0; j < istruttori.size() ; j++) {
+			if(istruttori.get(j).getId() == istruttore) {
+				prezzoIstr = istruttori.get(j).getPagaOraria();
+			}
+		}
+		
+		for(int j=0; j < campi.size() ; j++) {
+			if(campi.get(j).getId() == campo) {
+				prezzoCampo = campi.get(j).getPrezzo();
+			}
+		}
+		
+		String oraString = dataOra.substring(11, 13);
+		int ora = Integer.parseInt(oraString);
+		
+		if(ora > 19) {
+			prezzoLuci = 10;
+		}
+		
+		totale = prezzoLuci + prezzoIstr + prezzoCampo;
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		int durataOld = 0;
+		int idElimina = 0;
+		
+		for(int i=0; i < prenotazioni.size(); i++) {
+			if(prenotazione == prenotazioni.get(i).getId()) {
+				durataOld = prenotazioni.get(i).getDurata();
+				idElimina = prenotazioni.get(i+1).getId();
+			}
+		}
+		
+		if(durata != durataOld) {
+			if(durata == 1) {
+				prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+				dao.updateReserv(p);
+				dao.deleteReserv(idElimina);
+			}
+			else if(durata == 2) {
+				int ora2 = ora + 1;
+				String dataOra2 = dataOra.substring(0, 11) + ora2 + ":00:00";
+				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
+				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, "", campo, istruttore, 0);
+				dao.updateReserv(p1);
+				if(istruttore == 0) {
+					dao.insertReservNoIstr(p2);
+				}
+				else {
+					dao.insertReserv(p2);
+				}
+			}
+		}
+		else {
+			prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+			dao.updateReserv(p);
+		}
+	}
+	
+	public void eliminaPrenotazione() throws IOException, SQLException {
+		databaseDAO dao = new databaseDAO();
+		List<prenotazione> reserv = dao.selectReserv();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("LE TUE PRENOTAZIONI");
+		for (int i = 0; i < reserv.size(); i++) {
+			System.out.println("codice: " + reserv.get(i).getId());
+			System.out.println("partecipanti: " + reserv.get(i).getPartecipanti());
+			System.out.println("data e ora: " + reserv.get(i).getDataOra());
+			System.out.println("campo: " + reserv.get(i).getCampo());
+			System.out.println("istuttore: " + reserv.get(i).getIstruttore());
+		}
+
+		System.out.println("Digita il codice della prenotazione da eliminare: ");
+		String c = br.readLine();
+		int codice = Integer.parseInt(c);
+		if (dao.deleteReserv(codice)) {
+			System.out.println("Prenotazione eliminato correttamente");
+		}
+		;
+
+	}
+	
 	public void modificaPrenotazioneUtente(String username) throws SQLException, IOException {
 		databaseDAO dao = new databaseDAO();
 		List<prenotazione> prenotazioni = dao.selectReserv();
@@ -411,20 +540,18 @@ public class controller {
 		List<campo> fields = dao.selectFields();
 		String tipo = "";
 		String codice = "";
+		String campi = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("I TUOI CAMPI: ");
 		for (int i = 0; i < fields.size(); i++) {
-			System.out.println("Codice: " + fields.get(i).getId());
-			System.out.println("Tipo: " + fields.get(i).getTipo());
-			System.out.println("Coperto: ");
+			campi = fields.get(i).getId() + ")" + fields.get(i).getTipo()+ " "; 
 			if (fields.get(i).isCoperto()) {
-				System.out.println(" Sì ");
+				campi = campi + "Coperto ";
 			} else {
-				System.out.println("No");
+				campi = campi + "Non Coperto ";
 			}
-			System.out.println("Valutazione: " + fields.get(i).getValutazione());
-			System.out.println("Prezzo: " + fields.get(i).getPrezzo());
+			System.out.println(campi);
 		}
 		
 		System.out.println("Inserisci codice campo da modificare: ");
@@ -438,16 +565,19 @@ public class controller {
 			coperto = true;
 		}
 
-		System.out.println("Inserisci il prezzo orario: ");
+		System.out.println("Inserisci il nuovo prezzo orario: ");
 		float prezzo = Float.parseFloat(br.readLine());
 
-		System.out.println("Inserisci valutazione: [0-5]");
+		System.out.println("Inserisci nuova valutazione: [0-5]");
 		int valuta = Integer.parseInt(br.readLine());
 
 		campo field = new campo(id, tipo, coperto, prezzo, valuta, codice);
 		
 		if(dao.updateField(field)) {
 			System.out.println("Campo modificato correttamente!");
+		}
+		else {
+			System.out.println("Errore nella modifica!");
 		}
 
 	}
@@ -456,19 +586,18 @@ public class controller {
 		databaseDAO dao = new databaseDAO();
 		List<campo> fields = dao.selectFields();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String campi = "";
 
 		System.out.println("I TUOI CAMPI: ");
+		System.out.println("I TUOI CAMPI: ");
 		for (int i = 0; i < fields.size(); i++) {
-			System.out.println("Codice: " + fields.get(i).getId());
-			System.out.println("Tipo: " + fields.get(i).getTipo());
-			System.out.println("Coperto: ");
+			campi = fields.get(i).getId() + ")" + fields.get(i).getTipo()+ " "; 
 			if (fields.get(i).isCoperto()) {
-				System.out.println(" Sì ");
+				campi = campi + "Coperto ";
 			} else {
-				System.out.println("No");
+				campi = campi + "Non Coperto ";
 			}
-			System.out.println("Valutazione: " + fields.get(i).getValutazione());
-			System.out.println("Prezzo: " + fields.get(i).getPrezzo());
+			System.out.println(campi);
 		}
 
 		System.out.println("Digita il codice del campo da eliminare: ");
@@ -477,8 +606,12 @@ public class controller {
 		if (dao.deleteField(codice)) {
 			System.out.println("Campo eliminato correttamente");
 		}
+		else {
+			System.out.println("Errore nell'eliminazione!");
+		}
 	}
 
+	
 	public void aggiungiIstruttore() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 
@@ -524,6 +657,7 @@ public class controller {
 		dao.insertInstru(i);
 
 	}
+
 
 	public void modificaIstruttore() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
@@ -572,6 +706,7 @@ public class controller {
 		dao.updateInstru(ist);
 	}
 
+	
 	public void eliminaIstruttore() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 		List<istruttore> istr = dao.selectInstructors();
@@ -592,6 +727,7 @@ public class controller {
 
 	}
 
+	
 	public void modificaUtente() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 		List<utente> users = dao.selectUsers();
@@ -600,32 +736,37 @@ public class controller {
 		System.out.println("REGISTRO UTENTI: ");
 		
 		for (int i = 0; i < users.size(); i++) {
-			System.out.println(users.get(i).getId() + ") " + users.get(i).getNome()
+			System.out.println(users.get(i).getId() + ") " + users.get(i).getNome()+ " "
 					+ users.get(i).getCognome());
 		}
 		
-		System.out.println("Digita il codice dell'utente da eliminare: ");
+		System.out.println("Digita il codice dell'utente da modificare: ");
 		String c = br.readLine();
 		int codice = Integer.parseInt(c);
 		
-		System.out.println("Inserisci l'username: ");
+		System.out.println("Inserisci il nuovo username: ");
 		String usr = br.readLine();
 
-		System.out.println("Inserisci la password: ");
+		System.out.println("Inserisci la nuova password: ");
 		String psw = br.readLine();
 		
-		System.out.println("Inserisci il sesso: ");
+		System.out.println("Inserisci il nuovo sesso: ");
 		String se = br.readLine();
 		char s = se.charAt(0);
 
-		System.out.println("Inserisci la email: ");
+		System.out.println("Inserisci la nuova email: ");
 		String email = br.readLine();
 
-		System.out.println("Inserisci il numero di telefono: ");
+		System.out.println("Inserisci il nuovo numero di telefono: ");
 		String numero = br.readLine();
 		
 		utente u = new utente(codice, "", "", 0, email, numero, usr, psw, s);
-		dao.updateUser(u);
+		if(dao.updateUser(u)) {
+			System.out.println("Utente modificato correttamente!");
+		}
+		else {
+			System.out.println("Errore nella modifica!");
+		}
 	}
 	
 	public void eliminaUtente() throws IOException, SQLException {
@@ -646,6 +787,9 @@ public class controller {
 		
 		if (dao.deleteUser(codice)) {
 			System.out.println("Utente eliminato correttamente");
+		}
+		else {
+			System.out.println("Errore nell'eliminazione!");
 		}
 
 	}

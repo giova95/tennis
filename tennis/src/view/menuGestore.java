@@ -13,7 +13,7 @@ public class menuGestore {
 		controller con = new controller();
 		int c;
 		do {
-			System.out.println("Benvenuto" + u);
+			System.out.println("Benvenuto " + u);
 			System.out.println("1)Gestione Utenti \n2)Gestione Prenotazioni \n3)Gestione Campi \n4)Contabilità \n5)LogOut");
 			System.out.println("Scegli una delle opzioni[1-5]");
 			c = scanner.nextInt();
@@ -77,13 +77,9 @@ public class menuGestore {
 				break;
 			case 2:
 				con.modificaPrenotazione();
-
-				//TODO modifica prenotazione gestore, vede tutte le prenotazioni in controller
-
 				break;
 			case 3:
 				con.eliminaPrenotazione(); 
-				//TODO modifica prenotazione gestore, vede tutte le prenotazioni in controller
 				break;
 			case 4:
 				System.out.println("Caricamento Homepage...");
@@ -98,7 +94,7 @@ public class menuGestore {
 		controller con = new controller();
 		int c;
 		do {
-			System.out.println("1)Inserisci nuovo campo \n 2)Modifica campo \n 3)Elimina campo \n 4)HomePage");
+			System.out.println("1)Inserisci nuovo campo \n2)Modifica campo \n3)Elimina campo \n4)HomePage");
 			System.out.println("Scegli una delle opzioni[1-4]:");
 			c = scanner.nextInt();
 			switch (c) {
