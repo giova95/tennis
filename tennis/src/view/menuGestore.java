@@ -14,8 +14,7 @@ public class menuGestore {
 		int c;
 		do {
 			System.out.println("Benvenuto" + u);
-			System.out.println(
-					"1)Gestione Utenti \n 2)Gestione Prenotazioni \n 3)Gestione Campi \n 4)Contabilità \n 5)LogOut");
+			System.out.println("1)Gestione Utenti \n2)Gestione Prenotazioni \n3)Gestione Campi \n4)Contabilità \n5)LogOut");
 			System.out.println("Scegli una delle opzioni[1-5]");
 			c = scanner.nextInt();
 
@@ -44,7 +43,7 @@ public class menuGestore {
 		controller con = new controller();
 		int c;
 		do {
-			System.out.println("1)Inserisci nuovo utente \n 2)Modifica utente esistente \n 3)Elimina utente \n 4)HomePage");
+			System.out.println("1)Inserisci nuovo utente \n2)Modifica utente esistente \n3)Elimina utente \n4)HomePage");
 			System.out.println("Scegli una delle opzioni[1-4]:");
 			c = scanner.nextInt();
 			switch (c) {
@@ -77,14 +76,14 @@ public class menuGestore {
 				con.nuovaPrenotazione();
 				break;
 			case 2:
-<<<<<<< Upstream, based on branch 'master' of https://github.com/giova95/tennis
 				con.modificaPrenotazione();
-=======
-				//con.modificaPrenotazione(); //TODO modifica prenotazione gestore, vede tutte le prenotazioni
->>>>>>> 42003ed aggiornato modifica prenotazione utente
+
+				//TODO modifica prenotazione gestore, vede tutte le prenotazioni in controller
+
 				break;
 			case 3:
-				//con.eliminaPrenotazione(); //TODO modifica prenotazione gestore, vede tutte le prenotazioni
+				con.eliminaPrenotazione(); 
+				//TODO modifica prenotazione gestore, vede tutte le prenotazioni in controller
 				break;
 			case 4:
 				System.out.println("Caricamento Homepage...");
