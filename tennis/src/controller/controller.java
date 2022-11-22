@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.databaseDAO;
@@ -53,9 +54,13 @@ public class controller {
 		dao.insertUser(u);
 	}
 
-	public String login(String username, String password) {
-
+	public String login() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String response = "errore";
+		System.out.println("Inserisci il tuo username");
+		String username = br.readLine();
+		System.out.println("Inserisci la tua password");
+		String password = br.readLine();
 
 		// get users, instructors and manager from DB
 		databaseDAO dao = new databaseDAO();
@@ -218,18 +223,30 @@ public class controller {
 
 	}
 
-	public void modificaPrenotazione() throws SQLException, IOException {
+	public void modificaPrenotazioneUtente(String username) throws SQLException, IOException {
 		databaseDAO dao = new databaseDAO();
 		List<prenotazione> prenotazioni = dao.selectReserv();
-		
+		List<prenotazione> myPrenot = new ArrayList<>();		
 		
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
 		
 		int prenotazione = 0;
+		String[] partecipanti;
+		String p;
 		
 		for(int i=0; i < prenotazioni.size() ; i++) {
-			System.out.println(prenotazioni.get(i).getId() + ") " + "Data e ora: " + prenotazioni.get(i).getDataOra() + " Durata: " + prenotazioni.get(i).getDurata());
+			p = prenotazioni.get(i).getPartecipanti();
+			partecipanti = p.split(",");
+			for(int j=0; j<partecipanti.length; j++) {
+				if(username.equals(partecipanti[j])) {
+					myPrenot.add(prenotazioni.get(i));
+				}
+			}
+		}
+
+		for(int i=0; i < myPrenot.size() ; i++) {
+			System.out.println(myPrenot.get(i).getId() + ") " + "Data e ora: " + myPrenot.get(i).getDataOra() + " Durata: " + myPrenot.get(i).getDurata());
 		}
 		System.out.println("Digita il numero della prenotazione che si desidera modificare: ");
 		String pre = br.readLine();
@@ -299,8 +316,8 @@ public class controller {
 		
 		if(durata != durataOld) {
 			if(durata == 1) {
-				prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
-				dao.updateReserv(p);
+				prenotazione pren = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+				dao.updateReserv(pren);
 				dao.deleteReserv(idElimina);
 			}
 			else if(durata == 2) {
@@ -318,8 +335,8 @@ public class controller {
 			}
 		}
 		else {
-			prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
-			dao.updateReserv(p);
+			prenotazione pren = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+			dao.updateReserv(pren);
 		}
 	}
 

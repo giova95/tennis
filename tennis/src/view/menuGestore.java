@@ -77,7 +77,11 @@ public class menuGestore {
 				con.nuovaPrenotazione();
 				break;
 			case 2:
+<<<<<<< Upstream, based on branch 'master' of https://github.com/giova95/tennis
 				con.modificaPrenotazione();
+=======
+				//con.modificaPrenotazione(); //TODO modifica prenotazione gestore, vede tutte le prenotazioni
+>>>>>>> 42003ed aggiornato modifica prenotazione utente
 				break;
 			case 3:
 				con.eliminaPrenotazione();
