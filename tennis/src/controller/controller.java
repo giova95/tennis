@@ -162,6 +162,15 @@ public class controller {
 		String d = br.readLine();
 		System.out.println(d);
 		int durata = Integer.parseInt(d);
+		istruttore ist = null;
+		
+		for(int i=0;i<istruttori.size();i++) {
+			if(istruttori.get(i).getId() == istruttore) {
+				ist = istruttori.get(i);
+			}
+		}
+		ist.setOreLezione(ist.getOreLezione() + durata);
+		dao.updateInstru(ist);
 
 		////////////////////////////////////////////////////////////////////////////////////
 		// METODO DI TARIFFARIO PER IL CALCOLO DEL PREZZO
@@ -331,6 +340,7 @@ public class controller {
 	public void eliminaPrenotazione() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 		List<prenotazione> reserv = dao.selectReserv();
+		List<istruttore> istruttori = dao.selectInstructors();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("LE TUE PRENOTAZIONI");
@@ -345,6 +355,26 @@ public class controller {
 		System.out.println("Digita il codice della prenotazione da eliminare: ");
 		String c = br.readLine();
 		int codice = Integer.parseInt(c);
+		
+		istruttore ist = null;
+		
+		for(int i=0;i<istruttori.size();i++) {
+			if(istruttori.get(i).getId() == codice) {
+				ist = istruttori.get(i);
+			}
+		}
+		
+		int durata = 0;
+		
+		for(int i=0;i<reserv.size();i++) {
+			if(reserv.get(i).getIstruttore() == codice) {
+				durata = reserv.get(i).getDurata();
+			}
+		}
+		
+		ist.setOreLezione(ist.getOreLezione() - durata);
+		dao.updateInstru(ist);
+		
 		if (dao.deleteReserv(codice)) {
 			System.out.println("Prenotazione eliminato correttamente");
 		}
