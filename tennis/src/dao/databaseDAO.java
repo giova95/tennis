@@ -84,7 +84,6 @@ public class databaseDAO {
 
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
-			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -116,7 +115,6 @@ public class databaseDAO {
 
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FIELDS);) {
-			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -146,7 +144,6 @@ public class databaseDAO {
 
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_INSTRU);) {
-			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -183,7 +180,6 @@ public class databaseDAO {
 
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_RESERV);) {
-			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -214,7 +210,6 @@ public class databaseDAO {
 
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MANAGER);) {
-			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -239,8 +234,8 @@ public class databaseDAO {
 	}
 	
 	// CRUD API POST/PUT
-	public void insertUser(utente user) throws SQLException {
-		System.out.println(INSERT_USERS_SQL);
+	public boolean insertUser(utente user) throws SQLException {
+		boolean insertRow = false;
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
@@ -252,15 +247,15 @@ public class databaseDAO {
 			preparedStatement.setString(6, user.getNumero());
 			preparedStatement.setString(7, user.getUsername());
 			preparedStatement.setString(8, user.getPassword());
-			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
 			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
 		}
+		return insertRow;
 	}
 
-	public void insertInstru(istruttore istr) throws SQLException {
-		System.out.println(INSERT_INSTRU_SQL);
+	public boolean insertInstru(istruttore istr) throws SQLException {
+		boolean insertRow = false;
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INSTRU_SQL)) {
@@ -275,15 +270,15 @@ public class databaseDAO {
 			preparedStatement.setInt(9, istr.getEsperienza());
 			preparedStatement.setInt(10, istr.getOreLezione()); 
 			preparedStatement.setFloat(11, istr.getPagaOraria());
-			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+		return insertRow;
 	}
 
-	public void insertField(campo c) throws SQLException {
-		System.out.println(INSERT_FIELDS_SQL);
+	public boolean insertField(campo c) throws SQLException {
+		boolean insertRow = false;
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_FIELDS_SQL)) {
@@ -292,15 +287,15 @@ public class databaseDAO {
 			preparedStatement.setInt(3, c.getValutazione());
 			preparedStatement.setBoolean(4, c.isCoperto());
 			preparedStatement.setString(5, c.getCodice());
-			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+		return insertRow;
 	}
 
-	public void insertReserv(prenotazione p) throws SQLException {
-		System.out.println(INSERT_RESERV_SQL);
+	public boolean insertReserv(prenotazione p) throws SQLException {
+		boolean insertRow = false;
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RESERV_SQL)) {
@@ -311,15 +306,15 @@ public class databaseDAO {
 			preparedStatement.setInt(5, p.getCampo());
 			preparedStatement.setInt(6, p.getIstruttore());
 			preparedStatement.setInt(7, p.getTipo());
-			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+		return insertRow;
 	}
 	
-	public void insertReservNoIstr(prenotazione p) throws SQLException {
-		System.out.println(INSERT_RESERV_SQL);
+	public boolean insertReservNoIstr(prenotazione p) throws SQLException {
+		boolean insertRow = false;
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RESERV_NO_ISTR_SQL)) {
@@ -329,11 +324,11 @@ public class databaseDAO {
 			preparedStatement.setString(4, p.getPartecipanti());
 			preparedStatement.setInt(5, p.getCampo());
 			preparedStatement.setInt(6, p.getTipo());
-			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+		return insertRow;
 	}
 
 //CRUD API DELETE 
@@ -390,9 +385,7 @@ public class databaseDAO {
 			statement.setString(4, user.getUsername());
 			statement.setString(5, user.getPassword());
 			statement.setInt(6, user.getId());
-			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
-
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
@@ -407,7 +400,6 @@ public class databaseDAO {
 			statement.setInt(2, c.getValutazione());
 			statement.setBoolean(3, c.isCoperto());
 			statement.setInt(4, c.getId());
-			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -423,7 +415,6 @@ public class databaseDAO {
 			statement.setInt(2, p.getDurata());
 			statement.setFloat(3, p.getPrezzo());
 			statement.setInt(4, p.getId());
-			System.out.println(statement);
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -444,8 +435,6 @@ public class databaseDAO {
 			statement.setInt(7, istr.getOreLezione());
 			statement.setFloat(8, istr.getPagaOraria());
 			statement.setInt(9, istr.getId());
-			System.out.println(statement);
-
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
 			printSQLException(e);
