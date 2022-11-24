@@ -2,7 +2,9 @@ package view;
 
 import controller.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -115,4 +117,29 @@ public class menuGestore {
 		
 	}
 
+	public void gestioneContabilita() throws IOException {
+		Scanner scanner = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		controller con = new controller();
+		int c;
+		String data;
+		do {
+			System.out.println("1)Visualizza Profitti \n2)HomePage");
+			System.out.println("Scegli una delle opzioni[1-2]:");
+			c = scanner.nextInt();
+			switch (c) {
+			case 1:
+				System.out.println("Digita il mese e l'anno in cui vuoi vedere i profitti[YYYY-MM]");
+				data = br.readLine();
+				float[] profitti = con.calcolaProfitti(data);
+				System.out.println("1)Profitti: "+ profitti[0]);
+				System.out.println("2)Costi: "+profitti[1]);
+				System.out.println("3)Ricavi: "+ profitti[2]);
+				break;
+			case 2:
+				System.out.println("Caricamento Homepage...");
+				break;
+			}
+		} while (c != 2);
+	}
 }

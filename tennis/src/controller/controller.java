@@ -12,6 +12,7 @@ import model.campo;
 import model.gestore;
 import model.istruttore;
 import model.prenotazione;
+import model.tariffario;
 import model.utente;
 
 public class controller {
@@ -824,4 +825,17 @@ public class controller {
 
 	}
 
+	public float[] calcolaProfitti(String d) {
+		databaseDAO dao = new databaseDAO();
+		tariffario t = new tariffario();
+		List<prenotazione> prenotazioni = dao.selectReserv();
+		float ricavi = t.calcolaRicavi(prenotazioni, d);
+		float costi = t.calcolaCosti(prenotazioni, d);
+		
+		float[] contabilita = {ricavi-costi, costi, ricavi};
+		return contabilita;
+	}
+	
+	
+	
 }
