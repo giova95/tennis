@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import controller.controller;
+import model.istruttore;
 
 public class menuIstruttore {
 	public void menu(String username) throws IOException, SQLException {
@@ -31,12 +32,18 @@ public class menuIstruttore {
 				c.eliminaPrenotazioneUtente(username);
 				break;
 			case 4:
-				// TODO calcola stipendio: crea oggetto istruttore con dati presi dal db, usa
-				// metodo calcola stipendio di istruttore( da fare) che richiama il calcolo
-				// effettio dal tariffario (da fare anche questo)
+				String idString = username.substring(1);
+				int id = Integer.parseInt(idString);
+				getIstruttore(id);
 			case 5:
 				System.out.println("Logout effettuato.");
 			}
 		} while (choice != 4);
+	}
+	
+	private istruttore getIstruttore(int id) {
+		controller c = new controller();
+		istruttore i = c.selezionaIstruttore(id);
+		return i;
 	}
 }
