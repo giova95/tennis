@@ -209,6 +209,9 @@ public class controller {
 
 	public void modificaPrenotazione() throws SQLException, IOException {
 		databaseDAO dao = new databaseDAO();
+		tariffario tar = new tariffario();
+		int campo = 0;
+		int istruttore = 0;
 		List<prenotazione> prenotazioni = dao.selectReserv();
 		List<istruttore> istruttori = dao.selectInstructors();
 		List<campo> campi = dao.selectFields();
@@ -235,45 +238,16 @@ public class controller {
 		int durata = Integer.parseInt(d);
 		
 		
-		////////////////////////////////////////////////////////////////////////////////////
-		// METODO DI TARIFFARIO PER IL CALCOLO DEL PREZZO
-		float prezzoIstr = 0;
-		float prezzoLuci = 0;
-		float prezzoCampo = 0;
-		float totale;
-		int campo = 0;
-		int istruttore = 0;
-		
-		
 		for(int j=0; j < prenotazioni.size(); j++) {
 			if(prenotazioni.get(j).getId() == prenotazione) {
 				istruttore = prenotazioni.get(j).getIstruttore();
 				campo = prenotazioni.get(j).getCampo();
 			}
 		}
-		
-		for(int j=0; j < istruttori.size() ; j++) {
-			if(istruttori.get(j).getId() == istruttore) {
-				prezzoIstr = istruttori.get(j).getPagaOraria();
-			}
-		}
-		
-		for(int j=0; j < campi.size() ; j++) {
-			if(campi.get(j).getId() == campo) {
-				prezzoCampo = campi.get(j).getPrezzo();
-			}
-		}
-		
 		String oraString = dataOra.substring(11, 13);
 		int ora = Integer.parseInt(oraString);
-		
-		if(ora > 19) {
-			prezzoLuci = 10;
-		}
-		
-		totale = prezzoLuci + prezzoIstr + prezzoCampo;
-		
-		////////////////////////////////////////////////////////////////////////////////////
+
+		float totale = tar.prezzoPrenotazione(istruttori, campi, istruttore, campo, dataOra, durata, ora);
 		
 		int durataOld = 0;
 		int idElimina = 0;
@@ -814,6 +788,5 @@ public class controller {
 		istruttore i;
 		return i=dao.selectInstructor(id);
 	}
-	
-	
+
 }
