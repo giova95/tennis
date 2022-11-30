@@ -20,7 +20,7 @@ import model.utente;
 public class databaseDAO {
 	private String url = "jdbc:mysql://localhost:3306/tennisApp";
 	private String jdbcUsername = "root";
-	private String jdbcPassword = "";//per gilbe root
+	private String jdbcPassword = "root";//per gilbe root
 
 	// select all tables SQL
 	private static final String SELECT_ALL_USERS = "select * from utente";
@@ -28,6 +28,8 @@ public class databaseDAO {
 	private static final String SELECT_ALL_RESERV = "select * from prenotazione";
 	private static final String SELECT_ALL_INSTRU = "select * from istruttore";
 	private static final String SELECT_MANAGER = "select * from gestore";
+	private static final String SELECT_INSTRU = "select * from istruttore where id = ?;";
+
 
 	// insert in all tables SQL
 	private static final String INSERT_USERS_SQL = "INSERT INTO utente"
@@ -170,6 +172,38 @@ public class databaseDAO {
 
 		return istr;
 	}
+	
+	public istruttore selectInstructor() {
+		istruttore istr = null;
+		// using try-with-resources to avoid closing resources (boiler plate code)
+		// Step 1: Establishing a Connection
+		try (Connection connection = getConnection();
+
+				// Step 2:Create a statement using connection object
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_INSTRU);) {
+			// Step 3: Execute the query or update query
+			ResultSet rs = preparedStatement.executeQuery();
+			// Step 4: Process the ResultSet object.
+			int id = rs.getInt("id");
+			String name = rs.getString("nome");
+			String surname = rs.getString("cognome");
+			int age = rs.getInt("eta");
+			char sesso = rs.getString("sesso").charAt(0);
+			String email = rs.getString("email");
+			String telephone = rs.getString("telefono");
+			String user = rs.getString("username");
+			String password = rs.getString("password");
+			int experience = rs.getInt("esperienza");
+			int hour = rs.getInt("oreLezione");
+			float paid = rs.getFloat("pagaOraria");
+			istr = new istruttore(id, name, surname, age, sesso, email, telephone, user, password, experience, hour,
+					paid);
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		return istr;
+	}
+	
 
 	public List<prenotazione> selectReserv() {
 
