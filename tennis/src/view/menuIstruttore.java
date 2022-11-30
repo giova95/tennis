@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import controller.controller;
 import model.istruttore;
+import model.tariffario;
 
 public class menuIstruttore {
 	public void menu(String username) throws IOException, SQLException {
@@ -32,9 +33,11 @@ public class menuIstruttore {
 				c.eliminaPrenotazioneUtente(username);
 				break;
 			case 4:
-				String idString = username.substring(1);
+				tariffario t = new tariffario();
+				String idString = username.substring(1); //TODO testa questo codice e valutare se togliere il metodo da istruttore e richiamarlo direttamente da menu istruttore
 				int id = Integer.parseInt(idString);
-				getIstruttore(id);
+				istruttore i = getIstruttore(id);
+				t.calcolaStipendioIstruttore(i);
 			case 5:
 				System.out.println("Logout effettuato.");
 			}
