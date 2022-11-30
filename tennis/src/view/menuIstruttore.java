@@ -37,7 +37,9 @@ public class menuIstruttore {
 				String idString = username.substring(1); //TODO testa questo codice e valutare se togliere il metodo da istruttore e richiamarlo direttamente da menu istruttore
 				int id = Integer.parseInt(idString);
 				istruttore i = getIstruttore(id);
-				t.calcolaStipendioIstruttore(i);
+				float stipendio = t.calcolaStipendioIstruttore(i);
+				System.out.println("Lo stipendio attuale ammonta a: " + stipendio);
+				break;
 			case 5:
 				System.out.println("Logout effettuato.");
 			}
