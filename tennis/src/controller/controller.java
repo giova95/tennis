@@ -95,7 +95,7 @@ public class controller {
 
 	public void nuovaPrenotazione() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
-
+		tariffario tar = new tariffario();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		boolean valid = false;
@@ -173,38 +173,12 @@ public class controller {
 		ist.setOreLezione(ist.getOreLezione() + durata);
 		dao.updateInstru(ist);
 
-		////////////////////////////////////////////////////////////////////////////////////
-		// METODO DI TARIFFARIO PER IL CALCOLO DEL PREZZO
-		float prezzoIstr = 0;
-		float prezzoLuci = 0;
-		float prezzoCampo = 0;
-		float totale;
-
-//		List<istruttore> istruttori = dao.selectInstructors();
-//		List<campo> campi = dao.selectFields();
-
-		for (int i = 0; i < istruttori.size(); i++) {
-			if (istruttori.get(i).getId() == istruttore) {
-				prezzoIstr = istruttori.get(i).getPagaOraria();
-			}
-		}
-
-		for (int i = 0; i < campi.size(); i++) {
-			if (campi.get(i).getId() == campo) {
-				prezzoCampo = campi.get(i).getPrezzo();
-			}
-		}
-
+		
 		String oraString = dataOra.substring(11, 13);
 		int ora = Integer.parseInt(oraString);
 
-		if (ora > 19) {
-			prezzoLuci = 10;
-		}
+		float totale = tar.prezzoPrenotazione(istruttori, campi, istruttore, campo, dataOra, durata, ora);
 
-		totale = prezzoLuci + prezzoIstr + prezzoCampo;
-
-		////////////////////////////////////////////////////////////////////////////////////
 		if (durata == 1) {
 			if(istruttore == 0) {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
@@ -236,7 +210,8 @@ public class controller {
 	public void modificaPrenotazione() throws SQLException, IOException {
 		databaseDAO dao = new databaseDAO();
 		List<prenotazione> prenotazioni = dao.selectReserv();
-		
+		List<istruttore> istruttori = dao.selectInstructors();
+		List<campo> campi = dao.selectFields();
 		
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
@@ -269,8 +244,6 @@ public class controller {
 		int campo = 0;
 		int istruttore = 0;
 		
-		List<istruttore> istruttori = dao.selectInstructors();
-		List<campo> campi = dao.selectFields();
 		
 		for(int j=0; j < prenotazioni.size(); j++) {
 			if(prenotazioni.get(j).getId() == prenotazione) {
@@ -836,6 +809,11 @@ public class controller {
 		return contabilita;
 	}
 	
+	public istruttore selezionaIstruttore(int id) {
+		databaseDAO dao = new databaseDAO();
+		istruttore i;
+		return i=dao.selectInstructor(id);
+	}
 	
 	
 }

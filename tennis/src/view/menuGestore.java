@@ -30,7 +30,7 @@ public class menuGestore {
 			case 3:
 				gestioneCampi();
 			case 4:
-				//TODO: calcola profitti in tariffario
+				gestioneContabilita();
 				break;
 			case 5:
 				System.out.println("LogOut in corso...");
@@ -132,9 +132,9 @@ public class menuGestore {
 				System.out.println("Digita il mese e l'anno in cui vuoi vedere i profitti[YYYY-MM]");
 				data = br.readLine();
 				float[] profitti = con.calcolaProfitti(data);
-				System.out.println("1)Profitti: "+ profitti[0]);
-				System.out.println("2)Costi: "+profitti[1]);
-				System.out.println("3)Ricavi: "+ profitti[2]);
+				System.out.println("1)Profitti: "+ profitti[0]+"€");
+				System.out.println("2)Costi: "+profitti[1]+"€");
+				System.out.println("3)Ricavi: "+ profitti[2]+"€");
 				break;
 			case 2:
 				System.out.println("Caricamento Homepage...");

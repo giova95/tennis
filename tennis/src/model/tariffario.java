@@ -28,7 +28,8 @@ public class tariffario {
 		
 		return costi;
 	}
-	public float prezzoPrenotazione(List<istruttore> istruttori, List<campo> campi, int idIst, int idCampo, String dataOra, int durata) {
+	
+	public float prezzoPrenotazione(List<istruttore> istruttori, List<campo> campi, int idIst, int idCampo, String dataOra, int durata, int ora) {
 		float prezzoIstr = 0;
 		float prezzoLuci = 0;
 		float prezzoCampo = 0;
@@ -45,9 +46,6 @@ public class tariffario {
 				prezzoCampo = campi.get(i).getPrezzo();
 			}
 		}
-
-		String oraString = dataOra.substring(11, 13);
-		int ora = Integer.parseInt(oraString);
 
 		if (ora > 19) {
 		prezzoLuci = 10;

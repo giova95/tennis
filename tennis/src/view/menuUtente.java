@@ -24,7 +24,7 @@ public class menuUtente {
 				c.nuovaPrenotazione();
 				break;
 			case 2:
-				c.modificaPrenotazioneUtente(username); //TODO le prenotazioni restituite a stampa devono essere solo quelle fatte dall'utente stesso, per ora le restituisce tutte e permette di modificare uqlunque di esse
+				c.modificaPrenotazioneUtente(username);
 				break;
 			case 3:
 				c.eliminaPrenotazioneUtente(username);

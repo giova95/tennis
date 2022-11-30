@@ -114,9 +114,9 @@ public class istruttore {
 		this.username = username;
 	}
 	
-	public float calcoloStipendio(istruttore this) {
+	public float calcoloStipendio(istruttore i) {
 		
-		return t.calcolaStipendioIstruttore(this);
+		return t.calcolaStipendioIstruttore(i);
 	}
 
 	}
