@@ -173,7 +173,7 @@ public class databaseDAO {
 		return istr;
 	}
 	
-	public istruttore selectInstructor() {
+	public istruttore selectInstructor(int id) {
 		istruttore istr = null;
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		// Step 1: Establishing a Connection
@@ -182,9 +182,10 @@ public class databaseDAO {
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_INSTRU);) {
 			// Step 3: Execute the query or update query
+			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
 			// Step 4: Process the ResultSet object.
-			int id = rs.getInt("id");
+			
 			String name = rs.getString("nome");
 			String surname = rs.getString("cognome");
 			int age = rs.getInt("eta");
@@ -196,6 +197,7 @@ public class databaseDAO {
 			int experience = rs.getInt("esperienza");
 			int hour = rs.getInt("oreLezione");
 			float paid = rs.getFloat("pagaOraria");
+			
 			istr = new istruttore(id, name, surname, age, sesso, email, telephone, user, password, experience, hour,
 					paid);
 		} catch (SQLException e) {
