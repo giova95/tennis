@@ -70,7 +70,7 @@ public class menuGestore {
 		controller con = new controller();
 		int c;
 		do {
-			System.out.println("1)Inserisci nuova prenotazione \n2)Modifica Prenotazione \n3)Elimina Prenotazione \n4)HomePage");
+			System.out.println("1)Inserisci nuova prenotazione \n2)Modifica Prenotazione \n3)Elimina Prenotazione \n4)Fissa evento \n5)HomePage");
 			System.out.println("Scegli una delle opzioni[1-4]:");
 			c = scanner.nextInt();
 			switch (c) {
@@ -84,6 +84,8 @@ public class menuGestore {
 				con.eliminaPrenotazione(); 
 				break;
 			case 4:
+				con.fissaEvento();
+			case 5:
 				System.out.println("Caricamento Homepage...");
 				break;
 			}
