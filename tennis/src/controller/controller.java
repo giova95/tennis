@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import dao.databaseDAO;
 import model.campo;
@@ -327,6 +328,44 @@ public class controller {
 		}
 		;
 
+	}
+	
+	public void fissaEvento() throws IOException, SQLException { //TODO test fissa evento, controlla anche se gi da noia che ci sia G001 come partecipante
+		databaseDAO dao = new databaseDAO();
+		List<prenotazione> reserv = dao.selectReserv();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Scanner keyboard = new Scanner(System.in);
+
+		System.out.println("Indicare il codice del campo in cui si svolgerà l'evento: ");
+		int campo = keyboard.nextInt();
+		System.out.println("Indicare la data in cui si svolgerà l'evento(ex. YYYY-MM-DD): ");
+		String d = br.readLine();
+		System.out.println("Indicare l'orario di inizio dell'evento: ");
+		int inizio = keyboard.nextInt();
+		System.out.println("Indicare l'orario di fine dell'evento: ");
+		int fine = keyboard.nextInt();
+		int i = inizio;
+		
+		while(i <= fine) {
+			String data = "";
+			if(i < 10) {
+				data = d + " 0" + i + ":00:00";
+			}
+			else {
+				data = d + " " + i + ":00:00";
+			}
+			for(int j = 0; j < reserv.size(); j++) {
+				if(reserv.get(j).getDataOra().equals(data) && reserv.get(j).getCampo() == campo) {
+					dao.deleteReserv(reserv.get(j).getId());
+				}
+			}
+			prenotazione p = new prenotazione(0, data, 1, 0, "G001", campo, 1, 0);
+			dao.insertReservNoIstr(p);
+			// TODO Fai partire notifica mail 
+			i++;
+		}
+		
+		
 	}
 	
 	public void modificaPrenotazioneUtente(String username) throws SQLException, IOException {
