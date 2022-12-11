@@ -744,13 +744,15 @@ public class controller {
 
 	}
 
+
+	//TODO mettere in tariffario
 	public float[] calcolaProfitti(String d) {
 		databaseDAO dao = new databaseDAO();
 		tariffario t = new tariffario();
 		List<prenotazione> prenotazioni = dao.selectReserv();
 		float ricavi = t.calcolaRicavi(prenotazioni, d);
 		float costi = t.calcolaCosti(prenotazioni, d);
-		
+
 		float[] contabilita = {ricavi-costi, costi, ricavi};
 		return contabilita;
 	}

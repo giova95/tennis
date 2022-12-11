@@ -23,9 +23,9 @@ public class tariffario {
 	}
 
 	public float calcolaCosti(List<prenotazione> p, String Data) {
-		float costi = 0;
+		float costi = 100;
 		
-		
+		//TODO calcolo costi in base al numero di campi affittati
 		return costi;
 	}
 	
