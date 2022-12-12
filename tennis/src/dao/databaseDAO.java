@@ -20,7 +20,7 @@ import model.utente;
 public class databaseDAO {
 	private String url = "jdbc:mysql://localhost:3306/tennisApp";
 	private String jdbcUsername = "root";
-	private String jdbcPassword = "root";//per gilbe root
+	private String jdbcPassword = "";//per gilbe root
 
 	// select all tables SQL
 	private static final String SELECT_ALL_USERS = "select * from utente";

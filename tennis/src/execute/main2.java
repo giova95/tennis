@@ -2,19 +2,12 @@ package execute;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import dao.databaseDAO;
-import model.istruttore;
-import model.utente;
 import view.menuGestore;
-import view.menuFacade;
-import controller.controller;
 
 public class main2 {
-	public static void main(String[] args) throws InterruptedException, IOException, SQLException {
+	public static void main(String[] args) throws InterruptedException, IOException, SQLException  {
 		menuGestore MG = new menuGestore();
-		MG.menu("diocane");
+		MG.menu("gestore");
 	}
 }

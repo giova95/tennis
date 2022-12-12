@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import dao.databaseDAO;
+import javaMail.javaMailUtil;
 import model.campo;
 import model.gestore;
 import model.istruttore;
@@ -361,7 +362,7 @@ public class controller {
 			}
 			prenotazione p = new prenotazione(0, data, 1, 0, "G001", campo, 1, 0);
 			dao.insertReservNoIstr(p);
-			// TODO Fai partire notifica mail 
+			javaMailUtil.sendMail();
 			i++;
 		}
 		
