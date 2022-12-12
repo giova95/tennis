@@ -8,7 +8,7 @@ import javax.mail.internet.*;
 public class javaMailUtil {
 	
 	
-	public static void sendMail(String recipient, String text) throws MessagingException{
+	public static void sendMail(String recipient, String text, String subject) throws MessagingException{
 		System.out.println("Preparing to send email");
 		Properties prop = new Properties();
 	
@@ -27,18 +27,18 @@ public class javaMailUtil {
 		    }
 		});
 		
-		Message message = prepareMessage(session, myEmail, recipient, text);
+		Message message = prepareMessage(session, myEmail, recipient, text, subject);
 		
 		Transport.send(message);
 		System.out.println("email sent successfully");
 	}
 
-	private static Message prepareMessage(Session s, String myEmail, String recipient, String text){
+	private static Message prepareMessage(Session s, String myEmail, String recipient, String text, String subject){
 			try {
 				Message message = new MimeMessage(s);
 				message.setFrom(new InternetAddress(myEmail));
 				message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-				message.setSubject("Vediamo se funziona");
+				message.setSubject(subject);
 				message.setText(text);
 				return message;
 			}catch(MessagingException e) {

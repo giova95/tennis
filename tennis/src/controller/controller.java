@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.mail.MessagingException;
+
 import dao.databaseDAO;
 import javaMail.javaMailUtil;
 import model.campo;
@@ -331,12 +333,17 @@ public class controller {
 
 	}
 	
-	public void fissaEvento() throws IOException, SQLException { //TODO test fissa evento, controlla anche se gi da noia che ci sia G001 come partecipante
+	public void fissaEvento() throws IOException, SQLException, MessagingException { //TODO test fissa evento, controlla anche se gi da noia che ci sia G001 come partecipante
 		databaseDAO dao = new databaseDAO();
+		List<prenotazione> prenotazioni = dao.selectReserv();
 		List<prenotazione> reserv = dao.selectReserv();
+		List<utente> users = dao.selectUsers();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Scanner keyboard = new Scanner(System.in);
-
+		String[] partecipanti;
+		String p;
+		String sub = "Informazione di Servizio"; 
+		
 		System.out.println("Indicare il codice del campo in cui si svolgerà l'evento: ");
 		int campo = keyboard.nextInt();
 		System.out.println("Indicare la data in cui si svolgerà l'evento(ex. YYYY-MM-DD): ");
@@ -357,12 +364,24 @@ public class controller {
 			}
 			for(int j = 0; j < reserv.size(); j++) {
 				if(reserv.get(j).getDataOra().equals(data) && reserv.get(j).getCampo() == campo) {
+					p = prenotazioni.get(j).getPartecipanti();
+					partecipanti = p.split(",");
+					for(int l = 0; l < partecipanti.length; l++) {
+						for(int k = 0; k<users.size(); k++) {
+							utente u = users.get(k);
+							u.setEmail("utentetennis@gmail.com");
+							if(partecipanti[l].equals(u.getUsername())) {
+								String text = " Gentile signor " + u.getCognome() + ", \n con la presente le comunichiamo che la prenotazione " + reserv.get(j).getId() + " da lei effettuata"
+										+ " è stata rimossa dal gestore causa evento in tale data, consultare il sito per maggiori informazioni. \n \n Cordiali Saluti, \n La Direzione";
+								javaMailUtil.sendMail(u.getEmail(), text, sub);
+							}	
+						}
+					}
 					dao.deleteReserv(reserv.get(j).getId());
 				}
 			}
-			prenotazione p = new prenotazione(0, data, 1, 0, "G001", campo, 1, 0);
-			dao.insertReservNoIstr(p);
-			javaMailUtil.sendMail();
+			prenotazione p1 = new prenotazione(0, data, 1, 0, "G001", campo, 1, 0);
+			dao.insertReservNoIstr(p1);
 			i++;
 		}
 		

@@ -8,9 +8,11 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.mail.MessagingException;
+
 public class menuFacade {
 	
-	public void menu() throws IOException, SQLException, InterruptedException {
+	public void menu() throws IOException, SQLException, InterruptedException, MessagingException {
 		Scanner scan = new Scanner(System.in);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		menuUtente u = new menuUtente();

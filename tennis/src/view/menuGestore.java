@@ -8,9 +8,11 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.mail.MessagingException;
+
 public class menuGestore {
 
-	public void menu(String u) throws InterruptedException, IOException, SQLException {
+	public void menu(String u) throws InterruptedException, IOException, SQLException, MessagingException {
 		Scanner scanner = new Scanner(System.in);
 		controller con = new controller();
 		int c;
@@ -65,7 +67,7 @@ public class menuGestore {
 		} while (c != 4);
 	}
 
-	public void gestionePrenotazioni() throws IOException, SQLException{
+	public void gestionePrenotazioni() throws IOException, SQLException, MessagingException{
 		Scanner scanner = new Scanner(System.in);
 		controller con = new controller();
 		int c;
