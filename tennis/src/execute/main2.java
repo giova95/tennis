@@ -11,6 +11,11 @@ import view.menuGestore;
 public class main2 {
 	public static void main(String[] args) throws InterruptedException, IOException, SQLException, MessagingException  {
 		menuFacade mF = new menuFacade();
-		mF.menu();
+		try {
+			mF.menu();
+		}
+		catch (Exception e) {
+			System.out.println("Generic error");
+		}
 	}
 }

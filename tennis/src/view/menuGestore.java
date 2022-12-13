@@ -16,35 +16,39 @@ public class menuGestore {
 	public void menu(String u) throws InterruptedException, IOException, SQLException, MessagingException {
 		Scanner scanner = new Scanner(System.in);
 		controller con = new controller();
-		int c;
+		int c = 0;
 		do {
-			System.out.println("Benvenuto " + u);
-			System.out.println("1)Gestione Utenti \n2)Gestione Prenotazioni \n3)Gestione Campi \n4)Contabilità \n5)Gestione istruttori \n6)LogOut");
-			System.out.println("Scegli una delle opzioni[1-6]");
-			c = scanner.nextInt();
-
-			switch (c) {
-			case 1:
-				gestioneUtenti();
-				break;
-			case 2:
-				gestionePrenotazioni(u);
-				break;
-			case 3:
-				gestioneCampi();
-				break;
-			case 4:
-				gestioneContabilita();
-				break;
-			case 5:
-				gestioneIstruttori();			
-				break;
-			case 6:
-				System.out.println("LogOut in corso...");
-				break;
-			}
+			try {
+				System.out.println("Benvenuto " + u);
+				System.out.println("1)Gestione Utenti \n2)Gestione Prenotazioni \n3)Gestione Campi \n4)Contabilità \n5)Gestione istruttori \n6)LogOut");
+				System.out.println("Scegli una delle opzioni[1-6]");
+				c = scanner.nextInt();
+	
+				switch (c) {
+				case 1:
+					gestioneUtenti();
+					break;
+				case 2:
+					gestionePrenotazioni(u);
+					break;
+				case 3:
+					gestioneCampi();
+					break;
+				case 4:
+					gestioneContabilita();
+					break;
+				case 5:
+					gestioneIstruttori();			
+					break;
+				case 6:
+					System.out.println("LogOut in corso...");
+					break;
+				}
+			}	
+			catch (Exception e) {
+				System.out.println("Si è verificato un errore durnte l'ultima operazione, si consiglia di ricontrollare i valori inseriti e di riprovare.");
+			}	
 		} while (c != 6);
-
 	}
 
 	private void gestioneIstruttori() throws IOException, SQLException {
