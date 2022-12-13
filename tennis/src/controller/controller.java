@@ -24,7 +24,6 @@ public class controller {
 	public void controller() {
 		
 	}
-
 	public void registrazione() throws IOException, SQLException, MessagingException {
 
 		databaseDAO dao = new databaseDAO();
@@ -334,12 +333,6 @@ public class controller {
 		int istruttore = 0;
 		istruttore ist = null;
 
-		for(int i=0;i<istruttori.size();i++) {
-			if(istruttori.get(i).getId() == codice) {
-				ist = istruttori.get(i);
-			}
-		}
-		
 		int durata = 0;
 		String mail = "utentetennis@gmail.com";
 		String subj = "Eliminazione prenotazione avvenuta";
@@ -351,7 +344,7 @@ public class controller {
 		if(tipoP==1) {
 			
 			for(int i=0;i<reserv.size();i++) {
-				if(reserv.get(i).getIstruttore() == codice) {
+				if(reserv.get(i).getId() == codice) {
 					durata = reserv.get(i).getDurata();
 					istruttore = reserv.get(i).getIstruttore();
 				}
@@ -705,17 +698,17 @@ public class controller {
 		System.out.println("Inserisci il cognome dell'istruttore: ");
 		String cognome = br.readLine();
 
-		System.out.println("Inserisci email dell'istruttore:: ");
+		System.out.println("Inserisci email dell'istruttore: ");
 		String email = br.readLine();
 
-		System.out.println("Inserisci la password dell'istruttore:: ");
+		System.out.println("Inserisci la password dell'istruttore: ");
 		String password = br.readLine();
 
-		System.out.println("Inserisci età dell'istruttore:: ");
+		System.out.println("Inserisci età dell'istruttore: ");
 		String e = br.readLine();
 		int eta = Integer.parseInt(e);
 
-		System.out.println("Inserisci il numero di telefono dell'istruttore:: ");
+		System.out.println("Inserisci il numero di telefono dell'istruttore: ");
 		String numero = br.readLine();
 
 		System.out.println("Inserisci il tuo sesso: ");
@@ -737,8 +730,9 @@ public class controller {
 		String username = "I" + (int) (Math.random() * 9) + (int) (Math.random() * 9) + (int) (Math.random() * 9);
 
 		istruttore i = new istruttore(0, nome, cognome, eta, sesso, email, numero, username, password, esp, ore, paga);
-		dao.insertInstru(i);
-
+		if (dao.insertInstru(i)) {
+			System.out.println("Istruttore modificato correttamente");
+		}
 	}
 
 
@@ -777,7 +771,7 @@ public class controller {
 		System.out.println("Inserisci il numero di telefono: ");
 		String telefono = br.readLine();
 
-		System.out.println("Inserisci il salario: ");
+		System.out.println("Inserisci la paga oraria: ");
 		String p = br.readLine();
 		float paga = Float.parseFloat(p);
 
@@ -786,7 +780,10 @@ public class controller {
 		int ore = Integer.parseInt(o);
 
 		istruttore ist = new istruttore(istruttore, "", "", 0, s, email, telefono, usr, psw, exp, ore, paga);
-		dao.updateInstru(ist);
+		
+		if (dao.updateInstru(ist)) {
+			System.out.println("Istruttore modificato correttamente");
+		}
 	}
 
 	public void eliminaIstruttore() throws IOException, SQLException {
