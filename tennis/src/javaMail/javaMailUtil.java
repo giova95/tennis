@@ -17,8 +17,8 @@ public class javaMailUtil {
 		prop.put("mail.smtp.host", "smtp.gmail.com");
 		prop.put("mail.smtp.port", "587");
 	
-		String myEmail = "gestoretennis@gmail.com";
-		String password ="khjktgfzpwxwzgjt";
+		String myEmail = "circolouniversitariotennis@gmail.com";
+		String password ="ljwqjsxspluxvplq";
 		
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 		    @Override
