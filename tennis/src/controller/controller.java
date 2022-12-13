@@ -219,6 +219,7 @@ public class controller {
 				dao.insertReserv(p1);
 				dao.insertReserv(p2);
 				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj);
+
 			}
 		}
 
@@ -826,9 +827,12 @@ public class controller {
 		return dao.selectReserv();
 	}
 	
-	private void send(String username, List<utente> utenti, int durata, float totale, int campo, String dataOra, String partecipanti, String mail, String subj, String text) throws MessagingException {
+	private void send(String username, List<utente> utenti, int durata, float totale, int campo, String dataOra, String partecipanti, String mail, String subj) throws MessagingException {
 		for(int k = 0; k < utenti.size(); k++) {
 			if(username.equals(utenti.get(k).getUsername())) {
+				String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\nla informiamo che la sua registrazione è andata a buon fine.\nResoconto:\n-data e ora: " + dataOra
+						+ "\n-Durata: " + durata + "\n-Prezzo: " + totale + "\n-Campo: " + campo + "\n-Partecipanti" + partecipanti + "\n"
+						+ "Cordiali saluti,\n\n la Dirigenza";
 				javaMailUtil.sendMail(mail, text, subj);
 			}
 		}
