@@ -6,10 +6,12 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.mail.MessagingException;
+
 import controller.controller;
 
 public class menuUtente {
-	public void menu(String username) throws IOException, SQLException {
+	public void menu(String username) throws IOException, SQLException, MessagingException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Scanner scan = new Scanner(System.in);
 		controller c = new controller();

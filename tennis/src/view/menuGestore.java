@@ -43,7 +43,7 @@ public class menuGestore {
 
 	}
 
-	public void gestioneUtenti() throws IOException, SQLException {
+	public void gestioneUtenti() throws IOException, SQLException, MessagingException {
 		Scanner scanner = new Scanner(System.in);
 		controller con = new controller();
 		int c;
