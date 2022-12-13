@@ -203,13 +203,15 @@ public class controller {
 			if(istruttore == 0) {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReservNoIstr(p);
-				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "prenotazione");
+				System.out.println("Prenotazione creata correttamente");
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "la sua prenotazione");
 
 			}
 			else {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReserv(p);
-				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "prenotazione");
+				System.out.println("Prenotazione creata correttamente");
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "la sua prenotazione");
 			}
 		} else if (durata == 2) {
 			int ora2 = ora + 1;
@@ -219,14 +221,16 @@ public class controller {
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReservNoIstr(p1);
 				dao.insertReservNoIstr(p2);
-				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "prenotazione");
+				System.out.println("Prenotazione creata correttamente");
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "la sua prenotazione");
 			}
 			else {
 				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReserv(p1);
 				dao.insertReserv(p2);
-				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "prenotazione");
+				System.out.println("Prenotazione creata correttamente");
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "la sua prenotazione");
 
 			}
 		}
@@ -334,8 +338,6 @@ public class controller {
 		istruttore ist = null;
 
 		int durata = 0;
-		String mail = "utentetennis@gmail.com";
-		String subj = "Eliminazione prenotazione avvenuta";
 		
 		for(int i=0;i<reserv.size();i++) {
 			if(reserv.get(i).getId()== codice)
@@ -361,30 +363,13 @@ public class controller {
 
 		ist.setOreLezione(ist.getOreLezione() - durata);
 		dao.updateInstru(ist);
-		float totale = 0;
-		int campo = 0;
-		String dataOra = null;
-		String partecipanti = null;
-		
-		for(int k=0; k < utenti.size(); k++) {
-			if(username.equals(utenti.get(k).getUsername())) {
-				totale = reserv.get(k).getPrezzo();
-				campo = reserv.get(k).getCampo();
-				dataOra = reserv.get(k).getDataOra();
-				partecipanti = reserv.get(k).getPartecipanti();
-			}
-
-		}
 		
 		if (dao.deleteReserv(codice)) {
 
 			System.out.println("Prenotazione eliminata correttamente");
-
-			System.out.println("Prenotazione eliminato correttamente");
-			send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj, "eliminazione della prenotazione");
 		}
 	}
-	}
+}
 	
 	public void fissaEvento() throws IOException, SQLException, MessagingException { //TODO test fissa evento, controlla anche se gi da noia che ci sia G001 come partecipante
 		databaseDAO dao = new databaseDAO();
@@ -516,7 +501,8 @@ public class controller {
 				prenotazione pren = new prenotazione(prenotazione, dataOra, durata, totale, p, campo, istruttore, 0);
 				dao.updateReserv(pren);
 				dao.deleteReserv(idElimina);
-				send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "modifica di prenotazione");
+				System.out.println("Prenotazione modificata correttamente");
+				send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "la modifica della sua prenotazione");
 			}
 			else if(durata == 2) {
 				int ora2 = ora + 1;
@@ -526,30 +512,36 @@ public class controller {
 				dao.updateReserv(p1);
 				if(istruttore == 0) {
 					dao.insertReservNoIstr(p2);
-					send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "modifica di prenotazione");
+					System.out.println("Prenotazione modificata correttamente");
+					send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "la modifica della sua prenotazione");
 				}
 				else {
 					dao.insertReserv(p2);
-					send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "modifica di prenotazione");
+					System.out.println("Prenotazione modificata correttamente");
+					send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "la modifica della sua prenotazione");
 				}
 			}
 		}
 		else {
 			prenotazione pren = new prenotazione(prenotazione, dataOra, durata, totale, p, campo, istruttore, 0);
 			dao.updateReserv(pren);
-			send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "modifica di prenotazione");
+			System.out.println("Prenotazione modificata correttamente");
+			send(username, utenti, durata, totale, campo, dataOra, p, mail, subj, "la modifica della sua prenotazione");
 		}
 	}
 
-	public void eliminaPrenotazioneUtente(String username) throws IOException, SQLException {
+	public void eliminaPrenotazioneUtente(String username) throws IOException, SQLException, MessagingException {
 		databaseDAO dao = new databaseDAO();
 		List<prenotazione> reserv = dao.selectReserv();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));	
-		List<prenotazione> myPrenot = new ArrayList<>();		
+		List<prenotazione> myPrenot = new ArrayList<>();	
+		List<utente> utenti = dao.selectUsers();
 				
 		int prenotazione = 0;
 		String[] partecipanti;
 		String p;
+		String mail = "utentetennis@gmail.com";
+		String subj = "Eliminazione prenotazione avvenuta";
 		
 		for(int i=0; i < reserv.size() ; i++) {
 			p = reserv.get(i).getPartecipanti();
@@ -569,10 +561,27 @@ public class controller {
 		System.out.println("Digita il codice della prenotazione da eliminare: ");
 		String c = br.readLine();
 		int codice = Integer.parseInt(c);
-		if (dao.deleteReserv(codice)) {
-			System.out.println("Prenotazione eliminato correttamente");
+		
+		float totale = 0;
+		int campo = 0;
+		String dataOra = null;
+		String par = null;
+		int durata = 0;
+		
+		for(int k=0; k < reserv.size(); k++) {
+			if(codice == reserv.get(k).getId()) {
+				totale = reserv.get(k).getPrezzo();
+				campo = reserv.get(k).getCampo();
+				dataOra = reserv.get(k).getDataOra();
+				par = reserv.get(k).getPartecipanti();
+				durata = reserv.get(k).getDurata();
+			}
 		}
-		;
+		
+		if (dao.deleteReserv(codice)) {
+			System.out.println("Prenotazione eliminata correttamente");
+			send(username, utenti, durata, totale, campo, dataOra, par, mail, subj, "l' eliminazione della sua prenotazione");
+		}
 
 	}
 
@@ -885,8 +894,8 @@ public class controller {
 	private void send(String username, List<utente> utenti, int durata, float totale, int campo, String dataOra, String partecipanti, String mail, String subj, String tipoMail) throws MessagingException {
 		for(int k = 0; k < utenti.size(); k++) {
 			if(username.equals(utenti.get(k).getUsername())) {
-				String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\nla informiamo che la sua " + tipoMail + " è andata a buon fine.\nResoconto:\n-data e ora: " + dataOra
-						+ "\n-Durata: " + durata + "\n-Prezzo: " + totale + "\n-Campo: " + campo + "\n-Partecipanti" + partecipanti + "\n"
+				String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\nla informiamo che " + tipoMail + " è andata a buon fine.\nResoconto:\n-data e ora: " + dataOra
+						+ "\n- Durata: " + durata + " ora(e)\n- Prezzo: " + totale + "0 €\n- Campo: " + campo + "\n- Partecipanti: " + partecipanti + "\n\n"
 						+ "Cordiali saluti,\n\n la Dirigenza";
 				javaMailUtil.sendMail(mail, text, subj);
 			}
