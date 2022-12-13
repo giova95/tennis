@@ -201,33 +201,18 @@ public class controller {
 		float totale = tar.prezzoPrenotazione(istruttori, campi, istruttore, campo, dataOra, durata, ora);
 		String mail = "utentetennis@gmail.com";
 		String subj = "Prenotazione avvenuta";
-		String[] par = partecipanti.split(",");
 
 		if (durata == 1) {
 			if(istruttore == 0) {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReservNoIstr(p);
-				for(int l=0; l<par.length; l++) {
-					for(int k = 0; k < utenti.size(); k++) {
-						if(par[l].equals(utenti.get(k).getUsername())) {
-							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
-							javaMailUtil.sendMail(mail, text, subj);
-						}
-					}
-				}
-				
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj);
+
 			}
 			else {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReserv(p);
-				for(int l=0; l<par.length; l++) {
-					for(int k = 0; k < utenti.size(); k++) {
-						if(par[l].equals(utenti.get(k).getUsername())) {
-							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
-							javaMailUtil.sendMail(mail, text, subj);
-						}
-					}
-				}
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj);
 			}
 		} else if (durata == 2) {
 			int ora2 = ora + 1;
@@ -237,28 +222,15 @@ public class controller {
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReservNoIstr(p1);
 				dao.insertReservNoIstr(p2);
-				for(int l=0; l<par.length; l++) {
-					for(int k = 0; k < utenti.size(); k++) {
-						if(par[l].equals(utenti.get(k).getUsername())) {
-							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
-							javaMailUtil.sendMail(mail, text, subj);
-						}
-					}
-				}
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj);
 			}
 			else {
 				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReserv(p1);
 				dao.insertReserv(p2);
-				for(int l=0; l<par.length; l++) {
-					for(int k = 0; k < utenti.size(); k++) {
-						if(par[l].equals(utenti.get(k).getUsername())) {
-							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
-							javaMailUtil.sendMail(mail, text, subj);
-						}
-					}
-				}
+				send(username, utenti, durata, totale, campo, dataOra, partecipanti, mail, subj);
+
 			}
 		}
 
@@ -860,4 +832,16 @@ public class controller {
 		databaseDAO dao = new databaseDAO();
 		return dao.selectReserv();
 	}
+	
+	private void send(String username, List<utente> utenti, int durata, float totale, int campo, String dataOra, String partecipanti, String mail, String subj) throws MessagingException {
+		for(int k = 0; k < utenti.size(); k++) {
+			if(username.equals(utenti.get(k).getUsername())) {
+				String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\nla informiamo che la sua registrazione è andata a buon fine.\nResoconto:\n-data e ora: " + dataOra
+						+ "\n-Durata: " + durata + "\n-Prezzo: " + totale + "\n-Campo: " + campo + "\n-Partecipanti" + partecipanti + "\n"
+						+ "Cordiali saluti,\n\n la Dirigenza";
+				javaMailUtil.sendMail(mail, text, subj);
+			}
+		}
+	}
 }
+
