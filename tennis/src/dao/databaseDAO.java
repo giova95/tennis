@@ -30,7 +30,6 @@ public class databaseDAO {
 	private static final String SELECT_MANAGER = "select * from gestore";
 	private static final String SELECT_INSTRU = "select * from istruttore where id = ?;";
 
-
 	// insert in all tables SQL
 	private static final String INSERT_USERS_SQL = "INSERT INTO utente"
 			+ "  (nome, cognome, eta, sesso, email, telefono, username, password) VALUES " + " (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -59,9 +58,8 @@ public class databaseDAO {
 	private static final String UPDATE_INSTRU_SQL = "update istruttore set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?"
 			+ " oreLezione = ?, pagaOraria = ? where id = ?;";
 
-	public databaseDAO() {
-	}
-
+	public databaseDAO() {}
+	
 	protected Connection getConnection() {
 		Connection connection = null;
 		try {
@@ -73,7 +71,6 @@ public class databaseDAO {
 			e.printStackTrace();
 		}
 		return connection;
-
 	}
 
 	// CRUD API GET
@@ -133,7 +130,6 @@ public class databaseDAO {
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-
 		return fields;
 	}
 
@@ -169,7 +165,6 @@ public class databaseDAO {
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-
 		return istr;
 	}
 	

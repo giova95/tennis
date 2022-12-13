@@ -3,7 +3,17 @@ package model;
 import java.time.LocalDate;
 import java.util.List;
 
+import dao.databaseDAO;
+
 public class tariffario {
+	
+	public float[] calcolaProfitti(List<prenotazione> prenotazioni, String data) {
+		float ricavi = calcolaRicavi(prenotazioni, data);
+		float costi = calcolaCosti(prenotazioni, data);
+
+		float[] contabilita = {ricavi-costi, costi, ricavi};
+		return contabilita;
+	}
 	
 	public float calcolaStipendioIstruttore(istruttore i) {
 		int ore = i.getOreLezione();

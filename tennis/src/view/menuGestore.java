@@ -1,6 +1,7 @@
 package view;
 
 import controller.controller;
+import model.tariffario;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -125,6 +126,7 @@ public class menuGestore {
 		Scanner scanner = new Scanner(System.in);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		controller con = new controller();
+		tariffario t = new tariffario();
 		int c;
 		String data;
 		do {
@@ -135,10 +137,10 @@ public class menuGestore {
 			case 1:
 				System.out.println("Digita il mese e l'anno in cui vuoi vedere i profitti[YYYY-MM]");
 				data = br.readLine();
-				float[] profitti = con.calcolaProfitti(data);
+				float[] profitti = t.calcolaProfitti(con.selezionaPrenotazioni(),data);
 				System.out.println("1)Profitti: "+ profitti[0]+"€");
-				System.out.println("2)Costi: "+profitti[1]+"€");
-				System.out.println("3)Ricavi: "+ profitti[2]+"€");
+				System.out.println("2)Ricavi: "+ profitti[2]+"€");
+				System.out.println("3)Costi: "+profitti[1]+"€");
 				break;
 			case 2:
 				System.out.println("Caricamento Homepage...");
