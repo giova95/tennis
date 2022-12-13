@@ -32,26 +32,26 @@ public class controller {
 		boolean check = false;
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Inserisci il tuo nome: ");
+		System.out.println("Inserire nome: ");
 		String nome = br.readLine();
 
-		System.out.println("Inserisci il tuo cognome: ");
+		System.out.println("Inserire cognome: ");
 		String cognome = br.readLine();
 
-		System.out.println("Inserisci la tua email: ");
+		System.out.println("Inserire email ");
 		String email = br.readLine();
 
-		System.out.println("Inserisci la tua password: ");
+		System.out.println("Inserire password: ");
 		String password = br.readLine();
 
-		System.out.println("Inserisci la tua età: ");
+		System.out.println("Inserire età: ");
 		String e = br.readLine();
 		int eta = Integer.parseInt(e);
 
-		System.out.println("Inserisci il tuo numero di telefono: ");
+		System.out.println("Inserire numero di telefono: ");
 		String numero = br.readLine();
 
-		System.out.println("Inserisci il tuo sesso: ");
+		System.out.println("Inserire sesso: ");
 		String s = br.readLine();
 		char sesso = s.charAt(0);
 
@@ -60,9 +60,7 @@ public class controller {
 		while(!check) {
 			username = "U" + (int) (Math.random() * 9) + (int) (Math.random() * 9) + (int) (Math.random() * 9);
 			for(int i = 0; i<users.size(); i++) {
-				if(users.get(i).getUsername().equals(username))
-					check = false;
-				else
+				if(!users.get(i).getUsername().equals(username))
 					check = true;
 			}
 		}
@@ -89,23 +87,23 @@ public class controller {
 		List<istruttore> istru = dao.selectInstructors();
 		List<gestore> manag = dao.selectManager();
 
-		if (username.contains("U")) {
-			for (int i = 0; i < users.size(); i++) {
+		if(username.contains("U")) {
+			for(int i = 0; i < users.size(); i++) {
 				if (username.equals(users.get(i).getUsername()) && password.equals(users.get(i).getPassword()))
 					response = username;
 			}
 		}
 
-		else if (username.contains("I")) {
-			for (int i = 0; i < istru.size(); i++) {
-				if (username == istru.get(i).getUsername() && password == istru.get(i).getPassword())
+		else if(username.contains("I")) {
+			for(int i = 0; i < istru.size(); i++) {
+				if (username.equals(istru.get(i).getUsername()) && password.equals(istru.get(i).getPassword()))
 					response = username;
 			}
 		}
 
-		else if (username.contains("G")) {
-			for (int i = 0; i < manag.size(); i++) {
-				if (username == manag.get(i).getUsername() && password == manag.get(i).getPassword())
+		else if(username.contains("G")) {
+			for(int i = 0; i < manag.size(); i++) {
+				if (username.equals(manag.get(i).getUsername()) && password.equals(manag.get(i).getPassword()))
 					response = username;
 			}
 		}
@@ -244,6 +242,7 @@ public class controller {
 		List<prenotazione> prenotazioni = dao.selectReserv();
 		List<istruttore> istruttori = dao.selectInstructors();
 		List<campo> campi = dao.selectFields();
+		String part = "";
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
 		
@@ -283,21 +282,24 @@ public class controller {
 		for(int i=0; i < prenotazioni.size(); i++) {
 			if(prenotazione == prenotazioni.get(i).getId()) {
 				durataOld = prenotazioni.get(i).getDurata();
-				idElimina = prenotazioni.get(i+1).getId();
+				part = prenotazioni.get(i).getPartecipanti();
+				if(durataOld == 2) {
+					idElimina = prenotazioni.get(i+1).getId();
+				}
 			}
 		}
 		
 		if(durata != durataOld) {
 			if(durata == 1) {
-				prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+				prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, part, campo, istruttore, 0);
 				dao.updateReserv(p);
 				dao.deleteReserv(idElimina);
 			}
 			else if(durata == 2) {
 				int ora2 = ora + 1;
 				String dataOra2 = dataOra.substring(0, 11) + ora2 + ":00:00";
-				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, "", campo, istruttore, 0);
-				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, "", campo, istruttore, 0);
+				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, part, campo, istruttore, 0);
+				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, part, campo, istruttore, 0);
 				dao.updateReserv(p1);
 				if(istruttore == 0) {
 					dao.insertReservNoIstr(p2);
@@ -308,7 +310,7 @@ public class controller {
 			}
 		}
 		else {
-			prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, "", campo, istruttore, 0);
+			prenotazione p = new prenotazione(prenotazione, dataOra, durata, totale, part, campo, istruttore, 0);
 			dao.updateReserv(p);
 		}
 	}
@@ -318,6 +320,7 @@ public class controller {
 		List<prenotazione> reserv = dao.selectReserv();
 		List<istruttore> istruttori = dao.selectInstructors();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int tipoP = 0;
 
 		System.out.println("LE TUE PRENOTAZIONI");
 		for(int i=0; i < reserv.size() ; i++) {
@@ -327,31 +330,35 @@ public class controller {
 		System.out.println("Digita il codice della prenotazione da eliminare: ");
 		String c = br.readLine();
 		int codice = Integer.parseInt(c);
-		
+		int istruttore = 0;
 		istruttore ist = null;
 		
-		for(int i=0;i<istruttori.size();i++) {
-			if(istruttori.get(i).getId() == codice) {
-				ist = istruttori.get(i);
-			}
-		}
-		
-		int durata = 0;
-		
 		for(int i=0;i<reserv.size();i++) {
-			if(reserv.get(i).getIstruttore() == codice) {
-				durata = reserv.get(i).getDurata();
-			}
+			if(reserv.get(i).getId()== codice)
+				tipoP = reserv.get(i).getTipo();
 		}
+		if(tipoP==1) {
+			int durata = 0;
+			
+			for(int i=0;i<reserv.size();i++) {
+				if(reserv.get(i).getIstruttore() == codice) {
+					durata = reserv.get(i).getDurata();
+					istruttore = reserv.get(i).getIstruttore();
+				}
+			}
+			for(int i=0;i<istruttori.size();i++) {
+				if(istruttori.get(i).getId() == istruttore) {
+					ist = istruttori.get(i);
+				}
+			}
 		
-		ist.setOreLezione(ist.getOreLezione() - durata);
-		dao.updateInstru(ist);
+			ist.setOreLezione(ist.getOreLezione() - durata);
+			dao.updateInstru(ist);
+		}
 		
 		if (dao.deleteReserv(codice)) {
-			System.out.println("Prenotazione eliminato correttamente");
+			System.out.println("Prenotazione eliminata correttamente");
 		}
-		;
-
 	}
 	
 	public void fissaEvento() throws IOException, SQLException, MessagingException { //TODO test fissa evento, controlla anche se gi da noia che ci sia G001 come partecipante
@@ -539,7 +546,10 @@ public class controller {
 
 	public void aggiungiCampo() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
-
+		List<campo> fields = dao.selectFields();
+		boolean check =false;
+		String codice = "";
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Inserisci tipo di campo: ");
 		String tipo = br.readLine();
@@ -556,9 +566,14 @@ public class controller {
 
 		System.out.println("Inserisci valutazione: [0-5]");
 		int valuta = Integer.parseInt(br.readLine());
-
-		String codice = "C" + (int) (Math.random() * 9) + (int) (Math.random() * 9) + (int) (Math.random() * 9);
-
+		while(!check) { 
+			codice = "C" + (int) (Math.random() * 9) + (int) (Math.random() * 9) + (int) (Math.random() * 9);
+			for (int i = 0; i < fields.size(); i++) { 
+				if(!fields.get(i).getCodice().equals(codice))
+					check = true;
+			}
+		}
+		
 		campo field = new campo(0, tipo, coperto, prezzo, valuta, codice);
 		dao.insertField(field);
 
@@ -735,7 +750,6 @@ public class controller {
 		dao.updateInstru(ist);
 	}
 
-	
 	public void eliminaIstruttore() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();
 		List<istruttore> istr = dao.selectInstructors();
@@ -755,7 +769,6 @@ public class controller {
 		}
 
 	}
-
 	
 	public void modificaUtente() throws IOException, SQLException {
 		databaseDAO dao = new databaseDAO();

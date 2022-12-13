@@ -32,6 +32,7 @@ public class menuFacade {
 				break;
 			case 2:	
 				String client = c.login();
+				System.out.println(client);
 				if(client.contains("U"))
 					u.menu(client);
 				else if(client.contains("I"))

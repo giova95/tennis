@@ -32,6 +32,7 @@ public class menuGestore {
 				break;
 			case 3:
 				gestioneCampi();
+				break;
 			case 4:
 				gestioneContabilita();
 				break;
@@ -74,7 +75,7 @@ public class menuGestore {
 		int c;
 		do {
 			System.out.println("1)Inserisci nuova prenotazione \n2)Modifica Prenotazione \n3)Elimina Prenotazione \n4)Fissa evento \n5)HomePage");
-			System.out.println("Scegli una delle opzioni[1-4]:");
+			System.out.println("Scegli una delle opzioni[1-5]:");
 			c = scanner.nextInt();
 			switch (c) {
 			case 1:
@@ -84,7 +85,7 @@ public class menuGestore {
 				con.modificaPrenotazione();
 				break;
 			case 3:
-				con.eliminaPrenotazione(); 
+				con.eliminaPrenotazione();
 				break;
 			case 4:
 				con.fissaEvento();
@@ -92,7 +93,7 @@ public class menuGestore {
 				System.out.println("Caricamento Homepage...");
 				break;
 			}
-		} while (c != 4);
+		} while (c != 5);
 		
 	}
 	
