@@ -85,7 +85,7 @@ public class menuGestore {
 				con.modificaPrenotazione();
 				break;
 			case 3:
-				con.eliminaPrenotazione();
+				con.eliminaPrenotazione(username);
 				break;
 			case 4:
 				con.fissaEvento();
