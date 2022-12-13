@@ -25,7 +25,7 @@ public class databaseDAO {
 	// select all tables SQL
 	private static final String SELECT_ALL_USERS = "select * from utente";
 	private static final String SELECT_ALL_FIELDS = "select * from campo";
-	private static final String SELECT_ALL_RESERV = "select * from prenotazione";
+	private static final String SELECT_ALL_RESERV = "select * from prenotazione order by dataOra";
 	private static final String SELECT_ALL_INSTRU = "select * from istruttore";
 	private static final String SELECT_MANAGER = "select * from gestore";
 	private static final String SELECT_INSTRU = "select * from istruttore where id = ?;";
@@ -55,7 +55,7 @@ public class databaseDAO {
 	private static final String UPDATE_USERS_SQL = "update utente set sesso = ?, email = ?, telefono = ?, username = ?, password = ? where id = ?;";
 	private static final String UPDATE_FIELDS_SQL = "update campo set prezzo = ?, valutazione = ?, coperto = ? where id = ?;";
 	private static final String UPDATE_RESERV_SQL = "update prenotazione set  dataOra = ?, durata = ?, prezzo = ? where id = ?;";
-	private static final String UPDATE_INSTRU_SQL = "update istruttore set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?"
+	private static final String UPDATE_INSTRU_SQL = "update istruttore set sesso = ?, email = ?, telefono = ?, username = ?, password = ?, esperienza = ?,"
 			+ " oreLezione = ?, pagaOraria = ? where id = ?;";
 
 	public databaseDAO() {}

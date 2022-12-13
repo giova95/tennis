@@ -26,7 +26,7 @@ public class menuIstruttore {
 			choice = scan.nextInt();
 			switch (choice) {
 			case 1:
-				c.nuovaPrenotazione();
+				c.nuovaPrenotazione(username);
 				break;
 			case 2:
 				c.modificaPrenotazioneUtente(username);

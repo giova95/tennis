@@ -28,7 +28,7 @@ public class menuGestore {
 				gestioneUtenti();
 				break;
 			case 2:
-				gestionePrenotazioni();
+				gestionePrenotazioni(u);
 				break;
 			case 3:
 				gestioneCampi();
@@ -68,7 +68,7 @@ public class menuGestore {
 		} while (c != 4);
 	}
 
-	public void gestionePrenotazioni() throws IOException, SQLException, MessagingException{
+	public void gestionePrenotazioni(String username) throws IOException, SQLException, MessagingException{
 		Scanner scanner = new Scanner(System.in);
 		controller con = new controller();
 		int c;
@@ -78,7 +78,7 @@ public class menuGestore {
 			c = scanner.nextInt();
 			switch (c) {
 			case 1:
-				con.nuovaPrenotazione();
+				con.nuovaPrenotazione(username);
 				break;
 			case 2:
 				con.modificaPrenotazione();
