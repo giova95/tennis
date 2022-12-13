@@ -25,7 +25,7 @@ public class controller {
 		
 	}
 
-	public void registrazione() throws IOException, SQLException {
+	public void registrazione() throws IOException, SQLException, MessagingException {
 
 		databaseDAO dao = new databaseDAO();
 
@@ -57,6 +57,10 @@ public class controller {
 
 		utente u = new utente(0, nome, cognome, eta, email, numero, username, password, sesso);
 		dao.insertUser(u);
+		String mail = "utentetennis@gmail.com";
+		String text = "Gentile signor/a " + cognome + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
+		String subj = "Registrazione Circolo Universitario Tennis";
+		javaMailUtil.sendMail(mail, text, subj);
 	}
 
 	public String login() throws IOException {
@@ -97,13 +101,14 @@ public class controller {
 		return response;
 	}
 
-	public void nuovaPrenotazione() throws IOException, SQLException {
+	public void nuovaPrenotazione() throws IOException, SQLException, MessagingException {
 		databaseDAO dao = new databaseDAO();
 		tariffario tar = new tariffario();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		boolean valid = false;
 		List<istruttore> istruttori = dao.selectInstructors();
+		List<utente> utenti = dao.selectUsers();
 		int istruttore = 0;
 		String partecipanti = "";
 		int tipoP = 0;
@@ -132,7 +137,7 @@ public class controller {
 		while (!valid) {
 			System.out.println("Inserisci gli username dei partecipanti: ");
 			partecipanti = br.readLine();
-			List<utente> utenti = dao.selectUsers();
+			//List<utente> utenti = dao.selectUsers();
 			boolean trovato = false;
 			int i = 0;
 			while (i < utenti.size() && !trovato) {
@@ -182,15 +187,35 @@ public class controller {
 		int ora = Integer.parseInt(oraString);
 
 		float totale = tar.prezzoPrenotazione(istruttori, campi, istruttore, campo, dataOra, durata, ora);
+		String mail = "utentetennis@gmail.com";
+		String subj = "Prenotazione avvenuta";
+		String[] par = partecipanti.split(",");
 
 		if (durata == 1) {
 			if(istruttore == 0) {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReservNoIstr(p);
+				for(int l=0; l<par.length; l++) {
+					for(int k = 0; k < utenti.size(); k++) {
+						if(par[l].equals(utenti.get(k).getUsername())) {
+							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
+							javaMailUtil.sendMail(mail, text, subj);
+						}
+					}
+				}
+				
 			}
 			else {
 				prenotazione p = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReserv(p);
+				for(int l=0; l<par.length; l++) {
+					for(int k = 0; k < utenti.size(); k++) {
+						if(par[l].equals(utenti.get(k).getUsername())) {
+							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
+							javaMailUtil.sendMail(mail, text, subj);
+						}
+					}
+				}
 			}
 		} else if (durata == 2) {
 			int ora2 = ora + 1;
@@ -200,12 +225,28 @@ public class controller {
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReservNoIstr(p1);
 				dao.insertReservNoIstr(p2);
+				for(int l=0; l<par.length; l++) {
+					for(int k = 0; k < utenti.size(); k++) {
+						if(par[l].equals(utenti.get(k).getUsername())) {
+							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
+							javaMailUtil.sendMail(mail, text, subj);
+						}
+					}
+				}
 			}
 			else {
 				prenotazione p1 = new prenotazione(0, dataOra, durata, totale, partecipanti, campo, istruttore, tipoP);
 				prenotazione p2 = new prenotazione(0, dataOra2, durata, totale, partecipanti, campo, istruttore, tipoP);
 				dao.insertReserv(p1);
 				dao.insertReserv(p2);
+				for(int l=0; l<par.length; l++) {
+					for(int k = 0; k < utenti.size(); k++) {
+						if(par[l].equals(utenti.get(k).getUsername())) {
+							String text = "Gentile signor/a " + utenti.get(k).getCognome() + ",\n la informiamo che la sua registrazione è andata a buon fine.\n Cordiali saluti,\n\n la Dirigenza";
+							javaMailUtil.sendMail(mail, text, subj);
+						}
+					}
+				}
 			}
 		}
 
@@ -803,23 +844,16 @@ public class controller {
 
 	}
 
-
-	//TODO mettere in tariffario
-	public float[] calcolaProfitti(String d) {
-		databaseDAO dao = new databaseDAO();
-		tariffario t = new tariffario();
-		List<prenotazione> prenotazioni = dao.selectReserv();
-		float ricavi = t.calcolaRicavi(prenotazioni, d);
-		float costi = t.calcolaCosti(prenotazioni, d);
-
-		float[] contabilita = {ricavi-costi, costi, ricavi};
-		return contabilita;
-	}
 	
 	public istruttore selezionaIstruttore(int id) {
 		databaseDAO dao = new databaseDAO();
 		istruttore i;
 		return i=dao.selectInstructor(id);
+	}
+	
+	public List<prenotazione> selezionaPrenotazioni() {
+		databaseDAO dao = new databaseDAO();
+		return dao.selectReserv();
 	}
 
 }
