@@ -100,7 +100,7 @@ public class databaseDAO {
 				users.add(new utente(id, name, surname, age, email, telephone, user, password, sesso));
 			}
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return users;
 	}
@@ -128,7 +128,7 @@ public class databaseDAO {
 				fields.add(new campo(id, type, cover, price, evaluation, code));
 			}
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return fields;
 	}
@@ -163,7 +163,7 @@ public class databaseDAO {
 						paid));
 			}
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return istr;
 	}
@@ -196,7 +196,7 @@ public class databaseDAO {
 			istr = new istruttore(id, name, surname, age, sesso, email, telephone, user, password, experience, hour,
 					paid);
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return istr;
 	}
@@ -227,7 +227,7 @@ public class databaseDAO {
 				reserv.add(new prenotazione(id, date, durata, price, part, field, istr, type));
 			}
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return reserv;
 	}
@@ -259,7 +259,7 @@ public class databaseDAO {
 				manager.add(new gestore(id, name, surname, age, email, telephone, user, password, sesso, vat));
 			}
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return manager;
 	}
@@ -280,7 +280,7 @@ public class databaseDAO {
 			preparedStatement.setString(8, user.getPassword());
 			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return insertRow;
 	}
@@ -303,7 +303,7 @@ public class databaseDAO {
 			preparedStatement.setFloat(11, istr.getPagaOraria());
 			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return insertRow;
 	}
@@ -320,7 +320,7 @@ public class databaseDAO {
 			preparedStatement.setString(5, c.getCodice());
 			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return insertRow;
 	}
@@ -339,7 +339,7 @@ public class databaseDAO {
 			preparedStatement.setInt(7, p.getTipo());
 			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return insertRow;
 	}
@@ -357,7 +357,7 @@ public class databaseDAO {
 			preparedStatement.setInt(6, p.getTipo());
 			insertRow = preparedStatement.executeUpdate()>0;
 		} catch (SQLException e) {
-			printSQLException(e);
+			System.err.println(e);
 		}
 		return insertRow;
 	}
@@ -370,9 +370,6 @@ public class databaseDAO {
 				PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
 			statement.setInt(1, id);
 			rowDeleted = statement.executeUpdate() > 0;
-		}
-		catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
 		}
 		return rowDeleted;
 	}
@@ -421,7 +418,7 @@ public class databaseDAO {
 			statement.setInt(6, user.getId());
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return rowUpdated;
 	}
@@ -437,7 +434,7 @@ public class databaseDAO {
 			statement.setInt(5, c.getId());
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return rowUpdated;
 	}
@@ -452,7 +449,7 @@ public class databaseDAO {
 			statement.setInt(4, p.getId());
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return rowUpdated;
 	}
@@ -472,7 +469,7 @@ public class databaseDAO {
 			statement.setInt(9, istr.getId());
 			rowUpdated = statement.executeUpdate() > 0;
 		} catch (SQLException e) {
-			System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+			System.err.println(e);
 		}
 		return rowUpdated;
 	}
