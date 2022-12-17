@@ -107,9 +107,9 @@ class tests {
 	    assertTrue(d.insertInstru(istruttorecorretto));
 	    assertFalse(d.insertInstru(istruttoresbagliato));
 	    //Test Update
-	    istruttorecorretto = new istruttore(43,"modificatest", "modificatest", 20, 'm', "modifica@test.com", "333455", ""
+	    istruttorecorretto = new istruttore(44,"modificatest", "modificatest", 20, 'm', "modifica@test.com", "333455", ""
 	    		+ "I531", "modifciaistru", 4, 50, 20);
-	    istruttoresbagliato = new istruttore(43,"modificatest2", "modificatest2", 20, 'm', "modificatest2", "333455", ""
+	    istruttoresbagliato = new istruttore(44,"modificatest2", "modificatest2", 20, 'm', "modificatest2", "333455", ""
 	    		+ "I001", "modificaistru2", 4, 50, 20);
 	    
 	    assertTrue(d.updateInstru(istruttorecorretto)); 	
