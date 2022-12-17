@@ -64,8 +64,8 @@ class tests {
 		assertTrue(d.insertField(campoCorretto));
 		assertFalse(d.insertField(campoSbagliato));
 
-		campoCorretto = new campo(9, "erba", true, 18, 3, "C103");
-		campoSbagliato = new campo(9, "erba", true, 18, 3, "C023");
+		campoCorretto = new campo(45, "erba", true, 25, 3, "C103");
+		campoSbagliato = new campo(45, "erba", true, 25, 3, "C023");
 		
 		//Test Update
 		assertTrue(d.updateField(campoCorretto));
@@ -85,9 +85,9 @@ class tests {
 	    assertFalse(d.insertUser(utentesbagliato));
 	
 	    //Test Update
-	    utentecorretto = new utente(18,"modificatest", "modificatest", 20, "modifica@test.com", "333455", ""
+	    utentecorretto = new utente(51,"modificatest", "modificatest", 20, "modifica@test.com", "333455", ""
 	    		+ "U777", "modificatest", 'm');
-	    utentesbagliato = new utente(18,"modifica2test", "modifica2test", 23, "modifica2@test.com", "333455", ""
+	    utentesbagliato = new utente(51,"modifica2test", "modifica2test", 23, "modifica2@test.com", "333455", ""
 	    		+ "U001", "modificatest2", 'f');
 	    
 	    assertTrue(d.updateUser(utentecorretto));
@@ -107,9 +107,9 @@ class tests {
 	    assertTrue(d.insertInstru(istruttorecorretto));
 	    assertFalse(d.insertInstru(istruttoresbagliato));
 	    //Test Update
-	    istruttorecorretto = new istruttore(7,"modificatest", "modificatest", 20, 'm', "modifica@test.com", "333455", ""
+	    istruttorecorretto = new istruttore(43,"modificatest", "modificatest", 20, 'm', "modifica@test.com", "333455", ""
 	    		+ "I531", "modifciaistru", 4, 50, 20);
-	    istruttoresbagliato = new istruttore(7,"modificatest2", "modificatest2", 20, 'm', "modificatest2", "333455", ""
+	    istruttoresbagliato = new istruttore(43,"modificatest2", "modificatest2", 20, 'm', "modificatest2", "333455", ""
 	    		+ "I001", "modificaistru2", 4, 50, 20);
 	    
 	    assertTrue(d.updateInstru(istruttorecorretto)); 	
@@ -129,8 +129,8 @@ class tests {
 		assertFalse(d.insertReserv(prenSbagliata));
 		
 	    
-		prenCorretta = new prenotazione(134, "2022-08-16 15:00:00", 1, 12, "U001,U002", 2, 2, 1);
-	    prenSbagliata = new prenotazione(134, "2022-08-16 15:00:00", 1298901, 12, "U001,U002", 2, 2, 1);
+		prenCorretta = new prenotazione(156, "2022-08-16 15:00:00", 1, 12, "U001,U002", 2, 2, 1);
+	    prenSbagliata = new prenotazione(156, "2022-08-16 15:00:00", 1298901, 12, "U001,U002", 2, 2, 1);
 	    
 	    //Test Update
 	    assertTrue(d.updateReserv(prenCorretta));
