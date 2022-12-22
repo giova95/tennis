@@ -58,14 +58,14 @@ class tests {
 		databaseDAO d = new databaseDAO();
 		
 		campo campoCorretto = new campo(0, "erba", false, 18, 3, "C242");
-		campo campoSbagliato = new campo(0, "erba", false, 18, 3, "C023");
+		campo campoSbagliato = new campo(0, "erba", false, 18, 3, "C157");
 		
 		//Test Insert
 		assertTrue(d.insertField(campoCorretto));
 		assertFalse(d.insertField(campoSbagliato));
 
 		campoCorretto = new campo(45, "erba", true, 25, 3, "C103");
-		campoSbagliato = new campo(45, "erba", true, 25, 3, "C023");
+		campoSbagliato = new campo(45, "erba", true, 25, 3, "C157");
 		
 		//Test Update
 		assertTrue(d.updateField(campoCorretto));
